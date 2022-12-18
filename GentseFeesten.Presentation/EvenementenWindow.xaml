@@ -7,6 +7,34 @@
         mc:Ignorable="d"
         Title="EvenementenWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" MaxWidth="300" MinWidth="100"></ColumnDefinition>
+                <ColumnDefinition Width="2*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="1*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0">Hoofdevenementen</Label>
+            <DataGrid x:Name="MainEventGrid" Grid.Column="0" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="MainEventGrid_SelectedCellsChanged">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
+                    <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Naam}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <Label Grid.Column="1">Details Evenement</Label>
+            <TextBlock Grid.Column ="2" Grid.Row="1" Text="test"></TextBlock>
+        </Grid>
+
+        <!--<Grid>
+            <DataGrid x:Name="SubEventGrid" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Width="*" Header="Subevenementen" Binding="{Binding Naam}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>-->
+
+
     </Grid>
 </Window>

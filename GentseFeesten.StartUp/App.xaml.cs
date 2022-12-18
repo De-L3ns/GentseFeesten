@@ -1,4 +1,8 @@
-﻿using System;
+﻿using GentseFeesten.Domain;
+using GentseFeesten.Domain.Repository;
+using GentseFeesten.Persistence;
+using GentseFeesten.Presentation;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -15,7 +19,9 @@ namespace GentseFeesten.StartUp
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-
+            IEvenementenRepository repository = new EvenementenMapper();
+            DomainController domainController = new DomainController(repository);
+            GentseFeestenApplication application = new GentseFeestenApplication(domainController);
         }
     }
 }
