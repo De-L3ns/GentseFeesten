@@ -31,5 +31,6 @@ namespace GentseFeesten.Domain.Model
         {
             return $"Naam: {this.Naam}\nStart: {this.Start}\nEinde: {this.Einde}\nBeschrijving: {this.Beschrijving}\n €{this.Prijs} ";
         }
+
     }
 }

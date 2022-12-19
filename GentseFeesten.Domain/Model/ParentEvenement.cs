@@ -9,7 +9,7 @@ namespace GentseFeesten.Domain.Model
     public class ParentEvenement : Evenement
     {
         public List<string> childEventIds { get; init; }
-        private List<Evenement> _childEvenementen;
+        private List<Evenement> _childEvenementen = new List<Evenement>();
         public ParentEvenement(string id, string naam, DateTime? start, DateTime? einde, string beschrijving, int? prijs, List<string> childEventIds) : base(id, naam, start, einde, beschrijving, prijs)
         {
             this.childEventIds = childEventIds;

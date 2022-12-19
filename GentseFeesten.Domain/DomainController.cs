@@ -32,7 +32,12 @@ namespace GentseFeesten.Domain
         public void ShowAllChildsFromEvent(string id)
         {
             Evenement evenement = GetEventById(id);
-            _evenementenRepository.GetChilds(evenement).ForEach(e => { Trace.WriteLine(e.ToString()); });
+            List<Evenement> childEvenementen = _evenementenRepository.GetChilds(evenement);
+            ParentEvenement cast = evenement as ParentEvenement;
+            cast.AddChilds(childEvenementen);
+           
+
+            // _evenementenRepository.GetChilds(evenement).ForEach(e => { Trace.WriteLine(e.ToString()); });
             
         }
 

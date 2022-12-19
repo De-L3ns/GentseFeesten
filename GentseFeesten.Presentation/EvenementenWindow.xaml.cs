@@ -23,6 +23,7 @@ namespace GentseFeesten.Presentation
     {
         public event EventHandler EventSelected;
         private List<Evenement> _mainEvents;
+        public string IdOfSelectedEvent { get; set; }
         public List<Evenement> MainEvents {
             get => _mainEvents;
             set {
@@ -39,11 +40,12 @@ namespace GentseFeesten.Presentation
 
         }
 
-        private void MainEventGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
+        private void MainEventGrid_SelectedCellsChanged(object? sender, SelectedCellsChangedEventArgs e)
         {
             Evenement evenement = (Evenement)MainEventGrid.SelectedItem;
-            string id = evenement.Id;
-            
+            IdOfSelectedEvent = evenement.Id;
+
+            EventSelected?.Invoke(this, EventArgs.Empty);
 
         }
     }
