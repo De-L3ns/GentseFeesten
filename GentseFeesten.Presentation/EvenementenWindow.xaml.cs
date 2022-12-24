@@ -24,6 +24,7 @@ namespace GentseFeesten.Presentation
         public event EventHandler EventSelected;
         private List<Evenement> _mainEvents;
         public string IdOfSelectedEvent { get; set; }
+        public string NameOfSelectedEvent { get; set; }
         public List<Evenement> MainEvents {
             get => _mainEvents;
             set {
@@ -44,6 +45,7 @@ namespace GentseFeesten.Presentation
         {
             Evenement evenement = (Evenement)MainEventGrid.SelectedItem;
             IdOfSelectedEvent = evenement.Id;
+            NameOfSelectedEvent = evenement.Naam;
 
             EventSelected?.Invoke(this, EventArgs.Empty);
 

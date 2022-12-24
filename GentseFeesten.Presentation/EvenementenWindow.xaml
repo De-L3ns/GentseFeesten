@@ -10,6 +10,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" MaxWidth="300" MinWidth="100"></ColumnDefinition>
+                <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="2*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
@@ -23,8 +24,10 @@
                     <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Naam}" />
                 </DataGrid.Columns>
             </DataGrid>
-            <Label Grid.Column="1">Details Evenement</Label>
-            <TextBlock x:Name="DescriptionBox" Grid.Column ="2" Grid.Row="1" Text="test"></TextBlock>
+            <Label Grid.Column="2">Details Evenement</Label>
+            <Label Grid.Column="1">Tree View</Label>
+            <TextBlock x:Name="DescriptionBox" Grid.Column ="2" Grid.Row="2"></TextBlock>
+            <TreeView x:Name="EventTreeView" Grid.Column="1" Grid.Row="1"></TreeView>
         </Grid>
 
         <!--<Grid>

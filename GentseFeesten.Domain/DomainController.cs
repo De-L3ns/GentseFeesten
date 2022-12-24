@@ -29,16 +29,12 @@ namespace GentseFeesten.Domain
 
         }
 
-        public void ShowAllChildsFromEvent(string id)
+        public List<Evenement> GetChildsFromEvent (string id)
         {
             Evenement evenement = GetEventById(id);
             List<Evenement> childEvenementen = _evenementenRepository.GetChilds(evenement);
-            ParentEvenement cast = evenement as ParentEvenement;
-            cast.AddChilds(childEvenementen);
-           
+            return childEvenementen;
 
-            // _evenementenRepository.GetChilds(evenement).ForEach(e => { Trace.WriteLine(e.ToString()); });
-            
         }
 
         private void FillInMissingDate(Evenement evenement)
@@ -48,11 +44,12 @@ namespace GentseFeesten.Domain
 
             evenement.Start = startDates.First();
             evenement.Einde = endDates.First();
+            evenement.Prijs = _evenementenRepository.GetMissingPriceData(evenement);
         }
 
         private Evenement GetEventById(string id)
         {
-            Evenement evenement = _evenementenRepository.GetAllParentEvents().Where(e => e.Id == id).FirstOrDefault();
+            Evenement evenement = _evenementenRepository.GetEventById(id);
             return evenement;
         }
     }
