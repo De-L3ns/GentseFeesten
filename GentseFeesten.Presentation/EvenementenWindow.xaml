@@ -15,28 +15,50 @@
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="0">Hoofdevenementen</Label>
-            <DataGrid x:Name="MainEventGrid" Grid.Column="0" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="MainEventGrid_SelectedCellsChanged">
+            <Label Grid.Column="1">Hoofdevenementen</Label>
+            <DockPanel Grid.Column ="1" Grid.Row ="1">
+                <Label>Search</Label>
+                <TextBox x:Name="SearchMain"  Margin ="8" MaxLength ="100" Width="200" TextChanged="SearchMain_TextChanged"></TextBox>
+            </DockPanel>
+            <DataGrid x:Name="MainEventGrid" Grid.Column="1" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="MainEventGrid_SelectedCellsChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
                     <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Naam}" />
                 </DataGrid.Columns>
             </DataGrid>
+            <Label>Gentse Feesten 2023</Label>
+            <Label Grid.Column="0" Grid.Row="1">Structuur Evenement</Label>
             <Label Grid.Column="2">Details Evenement</Label>
-            <Label Grid.Column="1">Tree View</Label>
-            <TextBlock x:Name="DescriptionBox" Grid.Column ="2" Grid.Row="2"></TextBlock>
-            <TreeView x:Name="EventTreeView" Grid.Column="1" Grid.Row="1"></TreeView>
+            <TreeView x:Name="EventTreeView" Grid.Column="0" Grid.Row="2"></TreeView>
+            <Grid Grid.Row="2" Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height ="2*"></RowDefinition>
+                    <RowDefinition Height ="40"></RowDefinition>
+                    <RowDefinition Height ="1*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <TextBlock x:Name="DescriptionBox" Grid.Row="0"></TextBlock>
+                <DockPanel Grid.Column ="1" Grid.Row ="1">
+                    <Label>Search</Label>
+                    <TextBox x:Name="SearchChild" Margin ="8" MaxLength ="100" Width="200" TextChanged="SearchChild_TextChanged"></TextBox>
+                    <Button Margin="8" Width="150">Voeg toe aan planner</Button>
+                    <Button Margin="8" Width="150">Ga naar planner</Button>
+                </DockPanel>
+                <DataGrid x:Name="ChildEventGrid" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="ChildEventGrid_SelectedCellsChanged">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
+                        <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Naam}"/>
+                        <DataGridTextColumn Width="*" Header="Start" Binding="{Binding Start}"/>
+                        <DataGridTextColumn Width="*" Header="Einde" Binding="{Binding Einde}"/>
+                        <DataGridTextColumn Width="*" Header="Prijs" Binding="{Binding Prijs}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
 
-        <!--<Grid>
-            <DataGrid x:Name="SubEventGrid" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Width="*" Header="Subevenementen" Binding="{Binding Naam}" />
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>-->
+        
 
 
     </Grid>

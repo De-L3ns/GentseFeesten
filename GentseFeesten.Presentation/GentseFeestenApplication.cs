@@ -22,7 +22,7 @@ namespace GentseFeesten.Presentation
             _evenementenWindow.MainEvents = domainController.GetAllMainEvents();
 
             _evenementenWindow.EventSelected += EvenementenWindow_EvenementSelected;
-            _evenementenWindow.EventSelected += EvenementenWindow_PopulateTreeView;
+            
             
         }
 
@@ -30,33 +30,35 @@ namespace GentseFeesten.Presentation
         {
 
             _evenementenWindow.DescriptionBox.Text = _domainController.ShowEventDetails(_evenementenWindow.IdOfSelectedEvent);
+            List<Evenement> childevents = _domainController.GetChildsFromEvent(_evenementenWindow.IdOfSelectedEvent);
+            
+            _evenementenWindow.ChildEvents = childevents;
+
         }
 
-        private void EvenementenWindow_PopulateTreeView(object? sender, EventArgs e) {
-            _evenementenWindow.EventTreeView.Items.Clear();
+        //private void EvenementenWindow_PopulateTreeView(object? sender, EventArgs e) {
+        //    _evenementenWindow.EventTreeView.Items.Clear();
             
-            List<Evenement> childsToDisplay = _domainController.GetChildsFromEvent(_evenementenWindow.IdOfSelectedEvent);
-            TreeViewItem treeItem = new TreeViewItem();
-            treeItem.Header = _evenementenWindow.NameOfSelectedEvent;
+        //    List<Evenement> childsToDisplay = _domainController.GetChildsFromEvent(_evenementenWindow.IdOfSelectedEvent);
+        //    TreeViewItem treeItem = new TreeViewItem();
+        //    treeItem.Header = _evenementenWindow.NameOfSelectedEvent;
 
-            foreach (Evenement child in childsToDisplay)
-            {
-                treeItem.Items.Add(child.Naam);
-                if (_domainController.GetChildsFromEvent(child.Id).Count > 0)
-                {
-                    TreeViewItem treeItem2 = new TreeViewItem();
-                    foreach(Evenement c in _domainController.GetChildsFromEvent(child.Id))
-                    {
-                        treeItem2.Items.Add(child.Naam);
-                    }
+        //    foreach (Evenement child in childsToDisplay)
+        //    {
+        //        treeItem.Items.Add(child.Naam);
+        //        if (_domainController.GetChildsFromEvent(child.Id).Count > 0)
+        //        {
+        //            TreeViewItem treeItem2 = new TreeViewItem();
+        //            foreach(Evenement c in _domainController.GetChildsFromEvent(child.Id))
+        //            {
+        //                treeItem2.Items.Add(child.Naam);
+        //            }
 
-                    treeItem.Items.Add(treeItem2);
-                }
-            }
+        //            treeItem.Items.Add(treeItem2);
+        //        }
+        //    }
 
-            _evenementenWindow.EventTreeView.Items.Add(treeItem);
-            
-
-        }
+        //    _evenementenWindow.EventTreeView.Items.Add(treeItem);
+        //}
     }
 }

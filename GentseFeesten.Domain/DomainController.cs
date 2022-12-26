@@ -32,19 +32,33 @@ namespace GentseFeesten.Domain
         public List<Evenement> GetChildsFromEvent (string id)
         {
             Evenement evenement = GetEventById(id);
-            List<Evenement> childEvenementen = _evenementenRepository.GetChilds(evenement);
-            return childEvenementen;
+            List<Evenement> childEvents = _evenementenRepository.GetChilds(evenement);
+            foreach (Evenement childEvent in childEvents)
+            {
+                FillInMissingDate(childEvent);
+            }
+            return childEvents;
 
         }
 
         private void FillInMissingDate(Evenement evenement)
         {
-            List<DateTime?> startDates = _evenementenRepository.GetMissingStartData(evenement).OrderBy(x => x).ToList();
-            List<DateTime?> endDates = _evenementenRepository.GetMissingEndData(evenement).OrderByDescending(x => x).ToList();
-
-            evenement.Start = startDates.First();
-            evenement.Einde = endDates.First();
-            evenement.Prijs = _evenementenRepository.GetMissingPriceData(evenement);
+            if (evenement.Start == null)
+            {
+                List<DateTime?> startDates = _evenementenRepository.GetMissingStartData(evenement).OrderBy(x => x).ToList();
+                evenement.Start = startDates.First();
+            }
+            
+            if (evenement.Einde == null)
+            {
+                List<DateTime?> endDates = _evenementenRepository.GetMissingEndData(evenement).OrderByDescending(x => x).ToList();
+                evenement.Einde = endDates.First();
+            }
+            
+            if (evenement.Prijs == null)
+            {
+                evenement.Prijs = _evenementenRepository.GetMissingPriceData(evenement);
+            }
         }
 
         private Evenement GetEventById(string id)
