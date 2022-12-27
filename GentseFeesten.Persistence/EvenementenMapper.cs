@@ -9,9 +9,13 @@ namespace GentseFeesten.Persistence
 {
     public class EvenementenMapper : IEvenementenRepository
     {
+        // Database related private fields
         private const string ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=GentseFeesten;Integrated Security=True; Encrypt=False";
         private SqlConnection _sqlConnection;
-        private List<DateTime?> _result = new List<DateTime?>();
+        
+        // Data related private fields
+        private List<Evenement> _allMainEvents= new List<Evenement>();
+        private List<DateTime?> _dateTimesToWorkWith = new List<DateTime?>();
         private int _totalPrice = 0;
 
 
@@ -21,9 +25,18 @@ namespace GentseFeesten.Persistence
             _sqlConnection = new SqlConnection(ConnectionString);
         }
 
-        public List<Evenement> GetAllParentEvents()
+        public List<Evenement> GetMainEvents()
         {
-            List<Evenement> result = new();
+            if (_allMainEvents.Count == 0)
+            {
+                GetAllParentEvents();
+            }
+
+            return _allMainEvents;
+        }
+
+        private void GetAllParentEvents()
+        {
             try
             {
                 _sqlConnection.Open();
@@ -36,20 +49,17 @@ namespace GentseFeesten.Persistence
                     while (reader.Read())
                     {
                         string id = (string)reader["Id"];
-                        DateTime? einde = (reader["End"] == DBNull.Value) ? null : (DateTime?)reader["End"];
-                        DateTime? begin = (reader["Start"] == DBNull.Value) ? null : (DateTime?)reader["Start"];
+                        DateTime? end = (reader["End"] == DBNull.Value) ? null : (DateTime?)reader["End"];
+                        DateTime? start = (reader["Start"] == DBNull.Value) ? null : (DateTime?)reader["Start"];
                         string? childIds = (reader["Childs"] == DBNull.Value) ? null : (string?)reader["Childs"];
                         List<string>? childIdsToList = childIds?.Split(",").ToList();
-                        string? beschrijving = (reader["Description"] == DBNull.Value) ? null : (string?)reader["Description"];
-                        string? naam = (string)reader["Name"];
-                        int? prijs = (reader["Price"] == DBNull.Value) ? null : (int?)reader["Price"];
+                        string? description = (reader["Description"] == DBNull.Value) ? null : (string?)reader["Description"];
+                        string? name = (string)reader["Name"];
+                        int? price = (reader["Price"] == DBNull.Value) ? null : (int?)reader["Price"];
 
-
-                        result.Add(new ParentEvenement(id, naam, begin, einde, beschrijving, prijs, childIdsToList));
+                        _allMainEvents.Add(new MainEvenement(id, name, childIdsToList, start, end, description, price));
                     }
                 }
-
-                return result;
             }
             finally
             {
@@ -59,14 +69,14 @@ namespace GentseFeesten.Persistence
 
         public List<DateTime?> GetMissingStartData(Evenement evenement)
         {
-            _result.Clear();
+            _dateTimesToWorkWith.Clear();
             return GetMissingDateTimes(evenement, "Start");
 
         }
 
         public List<DateTime?> GetMissingEndData(Evenement evenement)
         {
-            _result.Clear();
+            _dateTimesToWorkWith.Clear();
             return GetMissingDateTimes(evenement, "End");
         }
 
@@ -78,7 +88,6 @@ namespace GentseFeesten.Persistence
 
         private List<DateTime?> GetMissingDateTimes(Evenement evenement, string columnName)
         {
-            
             try
             {
                 _sqlConnection.Open();
@@ -102,12 +111,12 @@ namespace GentseFeesten.Persistence
 
                         } else
                         {
-                            _result.Add(childDateTime);
+                            _dateTimesToWorkWith.Add(childDateTime);
                         }
 
                     }
                 }
-                return _result;
+                return _dateTimesToWorkWith;
             }
 
             finally { 
@@ -142,14 +151,11 @@ namespace GentseFeesten.Persistence
                         {
                             _totalPrice += (int)prijs;
                         }
-
                     }
                 }
 
                 return _totalPrice;
-               
             }
-
             finally
             {
                 _sqlConnection.Close();
@@ -157,7 +163,7 @@ namespace GentseFeesten.Persistence
         }
     
 
-        public List<Evenement> GetChilds(Evenement evenement)
+        public void GetChildEvents(Evenement evenement)
         {
             try
             {
@@ -183,14 +189,12 @@ namespace GentseFeesten.Persistence
                         string? parent = (reader["Parent"] == DBNull.Value) ? null : (string?)reader["Parent"];
                         int? price = (reader["Price"] == DBNull.Value) ? null : (int?)reader["Price"];
 
-
-                        listOfChilds.Add(new ChildEvenement(id, name, start, end, description, price, childIdsToList, parent));
-
+                        listOfChilds.Add(new ChildEvenement(id, name, start, end, description, price, childIdsToList, parent, evenement));
                     }
 
                 }
 
-                return listOfChilds;
+                evenement.SetChilds(listOfChilds);
 
             }
             finally { _sqlConnection.Close(); }
@@ -198,38 +202,43 @@ namespace GentseFeesten.Persistence
 
         public Evenement GetEventById(string eventId)
         {
-            try
+            Evenement evenement = (Evenement)_allMainEvents.Where(e => e.Id == eventId).FirstOrDefault();
+
+            if (evenement == null)
             {
-                _sqlConnection.Open();
-
-                SqlCommand cmd = new("SELECT * FROM Evenementen WHERE Id = @Id;", _sqlConnection);
-                cmd.Parameters.Add(new SqlParameter("@Id", eventId));
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                if (reader.HasRows)
+                try
                 {
-                    while (reader.Read())
+                    _sqlConnection.Open();
+
+                    SqlCommand cmd = new("SELECT * FROM Evenementen WHERE Id = @Id;", _sqlConnection);
+                    cmd.Parameters.Add(new SqlParameter("@Id", eventId));
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    if (reader.HasRows)
                     {
-                        string id = (string)reader["Id"];
-                        DateTime? end = (reader["End"] == DBNull.Value) ? null : (DateTime?)reader["End"];
-                        DateTime? start = (reader["Start"] == DBNull.Value) ? null : (DateTime?)reader["Start"];
-                        string? childIds = (reader["Childs"] == DBNull.Value) ? null : (string?)reader["Childs"];
-                        List<string>? childIdsToList = childIds?.Split(",").ToList();
-                        string? description = (reader["Description"] == DBNull.Value) ? null : (string?)reader["Description"];
-                        string? name = (string)reader["Name"];
-                        int? price = (reader["Price"] == DBNull.Value) ? null : (int?)reader["Price"];
+                        while (reader.Read())
+                        {
+                            string id = (string)reader["Id"];
+                            DateTime? end = (reader["End"] == DBNull.Value) ? null : (DateTime?)reader["End"];
+                            DateTime? start = (reader["Start"] == DBNull.Value) ? null : (DateTime?)reader["Start"];
+                            string? childIds = (reader["Childs"] == DBNull.Value) ? null : (string?)reader["Childs"];
+                            List<string>? childIdsToList = childIds?.Split(",").ToList();
+                            string? description = (reader["Description"] == DBNull.Value) ? null : (string?)reader["Description"];
+                            string? name = (string)reader["Name"];
+                            int? price = (reader["Price"] == DBNull.Value) ? null : (int?)reader["Price"];
 
-
-                        return new ParentEvenement(id, name, start, end, description, price, childIdsToList);
-                    }
+                            Evenement newEvenement = new Evenement(id, name, childIdsToList, start, end, description, price);
+                            _allMainEvents.Add(newEvenement);
+                            evenement = newEvenement;
+                        }
+                    } 
                 }
-
-                return null;
+                finally
+                {
+                    _sqlConnection.Close();
+                }
             }
-            finally
-            {
-                _sqlConnection.Close();
-            }
+            return evenement;
         }
     }
 }

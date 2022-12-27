@@ -13,32 +13,31 @@ namespace GentseFeesten.Domain
             _evenementenRepository = evenementenRepository;
         }
 
-
         public List<Evenement> GetAllMainEvents()
         {
-            List<Evenement> mainEvents = _evenementenRepository.GetAllParentEvents();
+            List<Evenement> mainEvents = _evenementenRepository.GetMainEvents();
             return mainEvents;
 
         }
 
-        public string ShowEventDetails(string id)
+        public string GetEventDetails(string id)
         {
-            Evenement eventToShowDetailsFrom = GetEventById(id);
-            FillInMissingDate(eventToShowDetailsFrom);
-            return $"{eventToShowDetailsFrom}";
-
+            Evenement evenement = GetEventById(id);
+            FillInMissingDate(evenement);
+            
+            return evenement.ToString();
         }
 
         public List<Evenement> GetChildsFromEvent (string id)
         {
             Evenement evenement = GetEventById(id);
-            List<Evenement> childEvents = _evenementenRepository.GetChilds(evenement);
+            _evenementenRepository.GetChildEvents(evenement);
+            List<Evenement> childEvents = evenement.GetChilds();
             foreach (Evenement childEvent in childEvents)
             {
                 FillInMissingDate(childEvent);
             }
             return childEvents;
-
         }
 
         private void FillInMissingDate(Evenement evenement)

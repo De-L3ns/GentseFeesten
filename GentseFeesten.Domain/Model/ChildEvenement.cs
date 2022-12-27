@@ -8,17 +8,19 @@ namespace GentseFeesten.Domain.Model
 {
     public class ChildEvenement : Evenement
     {
-        public List<string?> childEventIds { get; init; }
-        public string? parentId { get; init; }
-        public ChildEvenement(string id, string naam, DateTime? start, DateTime? einde, string beschrijving, int? prijs, List<string?> childEventIds, string? parentId) : base(id, naam, start, einde, beschrijving, prijs)
+        private Evenement _mainEvent;
+        
+        public ChildEvenement(string id, string naam, DateTime? start, DateTime? einde, string beschrijving, int? prijs, List<string?> childEventIds, string? parentId, Evenement mainEvent) : base(id, naam, childEventIds, start, einde, beschrijving, prijs)
         {
-            this.childEventIds = childEventIds;
-            this.parentId = parentId;
+            ParentId = parentId;
+            _mainEvent = mainEvent;
         }
+
+        public string? ParentId { get; init; }
 
         public override string? ToString()
         {
-            return base.ToString() + $"{parentId}";
+            return $"Parent: {_mainEvent.Name}\n" + base.ToString();
         }
     }
 }

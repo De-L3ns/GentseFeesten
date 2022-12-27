@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,8 @@ namespace GentseFeesten.Domain.Model
 {
     public class Evenement
     {
-        public Evenement(string id, string name, DateTime? start, DateTime? end, string description, int? price)
+        private List<Evenement> _childEvents = new List<Evenement>();
+        public Evenement(string id, string name, List<string?> childEventIds, DateTime? start, DateTime? end, string description, int? price)
         {
             Id = id;
             Name = name;
@@ -16,20 +18,32 @@ namespace GentseFeesten.Domain.Model
             End = end;
             Description = description;
             Price = price;
+            ChildEventIds = childEventIds;
         }
 
         public string Id { get; init; }
         public string Name { get; init; }
-
+        public List<string?> ChildEventIds { get; init; }
         public DateTime? Start { get; set; }
         public DateTime? End { get; set; }
         public string Description { get; set; }
         public int? Price { get; set; }
-       
 
+        public void SetChilds(List<Evenement> childEvents)
+        {
+            _childEvents = childEvents;
+        }
+        public List<Evenement> GetChilds()
+        {
+            return _childEvents;
+        }
+        private List<string> childEventNames() 
+        {
+            return _childEvents.Select(c => c.Name).ToList();
+        } 
         public override string? ToString()
         {
-            return $"Naam: {this.Name}\nStart: {this.Start}\nEinde: {this.End}\nBeschrijving: {this.Description}\n €{this.Price}";
+            return $"Naam: {this.Name}\nStart: {this.Start}\nEinde: {this.End}\nBeschrijving: {this.Description}\n €{this.Price}\n {String.Join('\n', childEventNames())}";
         }
 
     }
