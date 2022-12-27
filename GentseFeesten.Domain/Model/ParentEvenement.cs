@@ -9,7 +9,7 @@ namespace GentseFeesten.Domain.Model
     public class ParentEvenement : Evenement
     {
         public List<string> childEventIds { get; init; }
-        private List<Evenement> _childEvenementen = new List<Evenement>();
+        private List<Evenement> _childEvents = new List<Evenement>();
         public ParentEvenement(string id, string naam, DateTime? start, DateTime? einde, string beschrijving, int? prijs, List<string> childEventIds) : base(id, naam, start, einde, beschrijving, prijs)
         {
             this.childEventIds = childEventIds;
@@ -17,17 +17,17 @@ namespace GentseFeesten.Domain.Model
 
         public void AddChilds(List<Evenement> childs) 
         {
-            childs.ForEach(child => { _childEvenementen.Add(child); });
+            childs.ForEach(child => { _childEvents.Add(child); });
         }
 
         public List<Evenement> RetrieveChilds()
         {
-            return _childEvenementen;
+            return _childEvents;
         }
 
         public override string? ToString()
         {
-            List<string> childNames = _childEvenementen.Select(child => child.Naam).ToList();
+            List<string> childNames = _childEvents.Select(child => child.Name).ToList();
             return base.ToString() + $"{string.Join("\n-", childNames)}";
         }
 

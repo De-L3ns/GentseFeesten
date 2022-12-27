@@ -18,7 +18,7 @@ namespace GentseFeesten.Domain.Model
 
         public override string? ToString()
         {
-            return base.ToString() + " I am a child Event";
+            return base.ToString() + $"{parentId}";
         }
     }
 }

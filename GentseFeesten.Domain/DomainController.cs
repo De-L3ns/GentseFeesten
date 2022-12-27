@@ -49,15 +49,15 @@ namespace GentseFeesten.Domain
                 evenement.Start = startDates.First();
             }
             
-            if (evenement.Einde == null)
+            if (evenement.End == null)
             {
                 List<DateTime?> endDates = _evenementenRepository.GetMissingEndData(evenement).OrderByDescending(x => x).ToList();
-                evenement.Einde = endDates.First();
+                evenement.End = endDates.First();
             }
             
-            if (evenement.Prijs == null)
+            if (evenement.Price == null)
             {
-                evenement.Prijs = _evenementenRepository.GetMissingPriceData(evenement);
+                evenement.Price = _evenementenRepository.GetMissingPriceData(evenement);
             }
         }
 

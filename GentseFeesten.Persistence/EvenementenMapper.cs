@@ -8,12 +8,13 @@ using System.Data;
 namespace GentseFeesten.Persistence
 {
     public class EvenementenMapper : IEvenementenRepository
-
     {
         private const string ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=GentseFeesten;Integrated Security=True; Encrypt=False";
         private SqlConnection _sqlConnection;
         private List<DateTime?> _result = new List<DateTime?>();
         private int _totalPrice = 0;
+
+
 
         public EvenementenMapper()
         {
@@ -35,13 +36,13 @@ namespace GentseFeesten.Persistence
                     while (reader.Read())
                     {
                         string id = (string)reader["Id"];
-                        DateTime? einde = (reader["Einde"] == DBNull.Value) ? null : (DateTime?)reader["Einde"];
-                        DateTime? begin = (reader["Begin"] == DBNull.Value) ? null : (DateTime?)reader["Begin"];
+                        DateTime? einde = (reader["End"] == DBNull.Value) ? null : (DateTime?)reader["End"];
+                        DateTime? begin = (reader["Start"] == DBNull.Value) ? null : (DateTime?)reader["Start"];
                         string? childIds = (reader["Childs"] == DBNull.Value) ? null : (string?)reader["Childs"];
                         List<string>? childIdsToList = childIds?.Split(",").ToList();
-                        string? beschrijving = (reader["Beschrijving"] == DBNull.Value) ? null : (string?)reader["Beschrijving"];
-                        string? naam = (string)reader["Naam"];
-                        int? prijs = (reader["Prijs"] == DBNull.Value) ? null : (int?)reader["Prijs"];
+                        string? beschrijving = (reader["Description"] == DBNull.Value) ? null : (string?)reader["Description"];
+                        string? naam = (string)reader["Name"];
+                        int? prijs = (reader["Price"] == DBNull.Value) ? null : (int?)reader["Price"];
 
 
                         result.Add(new ParentEvenement(id, naam, begin, einde, beschrijving, prijs, childIdsToList));
@@ -59,14 +60,14 @@ namespace GentseFeesten.Persistence
         public List<DateTime?> GetMissingStartData(Evenement evenement)
         {
             _result.Clear();
-            return GetMissingDateTimes(evenement, "Begin");
+            return GetMissingDateTimes(evenement, "Start");
 
         }
 
         public List<DateTime?> GetMissingEndData(Evenement evenement)
         {
             _result.Clear();
-            return GetMissingDateTimes(evenement, "Einde");
+            return GetMissingDateTimes(evenement, "End");
         }
 
         public int GetMissingPriceData(Evenement evenement)
@@ -132,7 +133,7 @@ namespace GentseFeesten.Persistence
                     foreach (DataRow dr in dt.Rows)
                     {
                         string id = (string)dr["Id"];
-                        int? prijs = (dr["Prijs"] == DBNull.Value) ? null : (int?)dr["Prijs"];
+                        int? prijs = (dr["Price"] == DBNull.Value) ? null : (int?)dr["Price"];
                         if (prijs == null)
                         {
                             _sqlConnection.Close();
@@ -173,17 +174,17 @@ namespace GentseFeesten.Persistence
                     while (reader.Read())
                     {
                         string id = (string)reader["Id"];
-                        DateTime? einde = (reader["Einde"] == DBNull.Value) ? null : (DateTime?)reader["Einde"];
-                        DateTime? begin = (reader["Begin"] == DBNull.Value) ? null : (DateTime?)reader["Begin"];
+                        DateTime? end = (reader["End"] == DBNull.Value) ? null : (DateTime?)reader["End"];
+                        DateTime? start = (reader["Start"] == DBNull.Value) ? null : (DateTime?)reader["Start"];
                         string? childIds = (reader["Childs"] == DBNull.Value) ? null : (string?)reader["Childs"];
                         List<string>? childIdsToList = childIds?.Split(",").ToList();
-                        string? beschrijving = (reader["Beschrijving"] == DBNull.Value) ? null : (string?)reader["Beschrijving"];
-                        string? naam = (string)reader["Naam"];
+                        string? description = (reader["Description"] == DBNull.Value) ? null : (string?)reader["Description"];
+                        string? name = (string)reader["Name"];
                         string? parent = (reader["Parent"] == DBNull.Value) ? null : (string?)reader["Parent"];
-                        int? prijs = (reader["Prijs"] == DBNull.Value) ? null : (int?)reader["Prijs"];
+                        int? price = (reader["Price"] == DBNull.Value) ? null : (int?)reader["Price"];
 
 
-                        listOfChilds.Add(new ChildEvenement(id, naam, begin, einde, beschrijving, prijs, childIdsToList, parent));
+                        listOfChilds.Add(new ChildEvenement(id, name, start, end, description, price, childIdsToList, parent));
 
                     }
 
@@ -210,16 +211,16 @@ namespace GentseFeesten.Persistence
                     while (reader.Read())
                     {
                         string id = (string)reader["Id"];
-                        DateTime? einde = (reader["Einde"] == DBNull.Value) ? null : (DateTime?)reader["Einde"];
-                        DateTime? begin = (reader["Begin"] == DBNull.Value) ? null : (DateTime?)reader["Begin"];
+                        DateTime? end = (reader["End"] == DBNull.Value) ? null : (DateTime?)reader["End"];
+                        DateTime? start = (reader["Start"] == DBNull.Value) ? null : (DateTime?)reader["Start"];
                         string? childIds = (reader["Childs"] == DBNull.Value) ? null : (string?)reader["Childs"];
                         List<string>? childIdsToList = childIds?.Split(",").ToList();
-                        string? beschrijving = (reader["Beschrijving"] == DBNull.Value) ? null : (string?)reader["Beschrijving"];
-                        string? naam = (string)reader["Naam"];
-                        int? prijs = (reader["Prijs"] == DBNull.Value) ? null : (int?)reader["Prijs"];
+                        string? description = (reader["Description"] == DBNull.Value) ? null : (string?)reader["Description"];
+                        string? name = (string)reader["Name"];
+                        int? price = (reader["Price"] == DBNull.Value) ? null : (int?)reader["Price"];
 
 
-                        return new ParentEvenement(id, naam, begin, einde, beschrijving, prijs, childIdsToList);
+                        return new ParentEvenement(id, name, start, end, description, price, childIdsToList);
                     }
                 }
 

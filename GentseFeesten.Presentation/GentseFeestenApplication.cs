@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using GentseFeesten.Domain;
 using GentseFeesten.Domain.Model;
@@ -15,50 +16,41 @@ namespace GentseFeesten.Presentation
         public GentseFeestenApplication(DomainController domainController)
         {
             _domainController = domainController;
-            // domainController.ShowAllParents();
-            // domainController.ShowAllChildsFromEvent("3cf14c31-68fb-4636-8a47-e90cbe0188fa");
             _evenementenWindow= new EvenementenWindow();
             _evenementenWindow.Show();
             _evenementenWindow.MainEvents = domainController.GetAllMainEvents();
-
             _evenementenWindow.EventSelected += EvenementenWindow_EvenementSelected;
+            _evenementenWindow.EventSelected += EvenementenWindow_PopulateTreeView;
             
             
         }
 
-        private void EvenementenWindow_EvenementSelected(object? sender, EventArgs e)
+        private void EvenementenWindow_EvenementSelected(object? sender, Evenement e)
         {
 
             _evenementenWindow.DescriptionBox.Text = _domainController.ShowEventDetails(_evenementenWindow.IdOfSelectedEvent);
+            // _evenementenWindow.DescriptionBox.Text = e.ToString();
             List<Evenement> childevents = _domainController.GetChildsFromEvent(_evenementenWindow.IdOfSelectedEvent);
-            
             _evenementenWindow.ChildEvents = childevents;
 
         }
 
-        //private void EvenementenWindow_PopulateTreeView(object? sender, EventArgs e) {
-        //    _evenementenWindow.EventTreeView.Items.Clear();
+        private void EvenementenWindow_PopulateTreeView(object? sender, Evenement e)
+        {
+            if (e is ParentEvenement)
+            {
+                _evenementenWindow.EventTreeView.Items.Clear();
+                TreeViewItem mainEvent = new TreeViewItem();
+                mainEvent.Header = _evenementenWindow.NameOfSelectedEvent;
+                _evenementenWindow.EventTreeView.Items.Add(mainEvent);
+            } else
+            {
+                TreeViewItem childEvent = new TreeViewItem();
+                childEvent.Header = _evenementenWindow.NameOfSelectedEvent;
+                TreeViewItem mainEvent = (TreeViewItem)_evenementenWindow.EventTreeView.Items[0];
+                mainEvent.Items.Add(childEvent);
+            }
             
-        //    List<Evenement> childsToDisplay = _domainController.GetChildsFromEvent(_evenementenWindow.IdOfSelectedEvent);
-        //    TreeViewItem treeItem = new TreeViewItem();
-        //    treeItem.Header = _evenementenWindow.NameOfSelectedEvent;
-
-        //    foreach (Evenement child in childsToDisplay)
-        //    {
-        //        treeItem.Items.Add(child.Naam);
-        //        if (_domainController.GetChildsFromEvent(child.Id).Count > 0)
-        //        {
-        //            TreeViewItem treeItem2 = new TreeViewItem();
-        //            foreach(Evenement c in _domainController.GetChildsFromEvent(child.Id))
-        //            {
-        //                treeItem2.Items.Add(child.Naam);
-        //            }
-
-        //            treeItem.Items.Add(treeItem2);
-        //        }
-        //    }
-
-        //    _evenementenWindow.EventTreeView.Items.Add(treeItem);
-        //}
+        }
     }
 }

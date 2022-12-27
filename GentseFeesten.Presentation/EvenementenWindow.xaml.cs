@@ -19,7 +19,7 @@ namespace GentseFeesten.Presentation
 {
     public partial class EvenementenWindow : Window
     {
-        public event EventHandler EventSelected;
+        public event EventHandler<Evenement> EventSelected;
         private List<Evenement> _mainEvents;
         private List<Evenement> _childEvents;
 
@@ -30,6 +30,7 @@ namespace GentseFeesten.Presentation
 
         public string IdOfSelectedEvent { get; set; }
         public string NameOfSelectedEvent { get; set; }
+        
         public List<Evenement> MainEvents
         {
             get => _mainEvents;
@@ -77,9 +78,9 @@ namespace GentseFeesten.Presentation
             {
                 Evenement evenement = (Evenement)grid.SelectedItem;
                 IdOfSelectedEvent = evenement.Id;
-                NameOfSelectedEvent = evenement.Naam;
+                NameOfSelectedEvent = evenement.Name;
 
-                EventSelected?.Invoke(this, EventArgs.Empty);
+                EventSelected?.Invoke(this, evenement);
             }
         }
 
@@ -88,7 +89,7 @@ namespace GentseFeesten.Presentation
             var mainTextSearch = sender as TextBox;
             if (mainTextSearch.Text != null)
             {
-                var filteredNames = gridSource.Where(n => n.Naam.ToLower().Contains(mainTextSearch.Text.ToLower()));
+                var filteredNames = gridSource.Where(n => n.Name.ToLower().Contains(mainTextSearch.Text.ToLower()));
                 grid.ItemsSource = filteredNames;
             }
         }

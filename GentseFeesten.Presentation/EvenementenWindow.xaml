@@ -26,7 +26,7 @@
             <DataGrid x:Name="MainEventGrid" Grid.Column="1" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="MainEventGrid_SelectedCellsChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
-                    <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Naam}" />
+                    <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Name}" />
                 </DataGrid.Columns>
             </DataGrid>
             <Label>Gentse Feesten 2023</Label>
@@ -49,10 +49,10 @@
                 <DataGrid x:Name="ChildEventGrid" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="ChildEventGrid_SelectedCellsChanged">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
-                        <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Naam}"/>
+                        <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Name}"/>
                         <DataGridTextColumn Width="*" Header="Start" Binding="{Binding Start}"/>
-                        <DataGridTextColumn Width="*" Header="Einde" Binding="{Binding Einde}"/>
-                        <DataGridTextColumn Width="*" Header="Prijs" Binding="{Binding Prijs}"/>
+                        <DataGridTextColumn Width="*" Header="Einde" Binding="{Binding End}"/>
+                        <DataGridTextColumn Width="*" Header="Prijs" Binding="{Binding Price}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
