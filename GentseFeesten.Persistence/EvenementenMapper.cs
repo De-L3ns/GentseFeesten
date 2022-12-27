@@ -202,7 +202,7 @@ namespace GentseFeesten.Persistence
 
         public Evenement GetEventById(string eventId)
         {
-            Evenement evenement = (Evenement)_allMainEvents.Where(e => e.Id == eventId).FirstOrDefault();
+            Evenement evenement = _allMainEvents.Where(e => e.Id == eventId).FirstOrDefault();
 
             if (evenement == null)
             {

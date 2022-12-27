@@ -39,7 +39,7 @@
                     <RowDefinition Height ="40"></RowDefinition>
                     <RowDefinition Height ="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock x:Name="DescriptionBox" Grid.Row="0"></TextBlock>
+                <TextBlock x:Name="DescriptionBox" Grid.Row="0" FontWeight="Bold" FontSize="18" TextAlignment="Center" TextWrapping="Wrap"></TextBlock>
                 <DockPanel Grid.Column ="1" Grid.Row ="1">
                     <Label>Search</Label>
                     <TextBox x:Name="SearchChild" Margin ="8" MaxLength ="100" Width="200" TextChanged="SearchChild_TextChanged"></TextBox>

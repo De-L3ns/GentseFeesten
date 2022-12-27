@@ -27,9 +27,10 @@ namespace GentseFeesten.Presentation
 
         private void EvenementenWindow_EvenementSelected(object? sender, Evenement e)
         {
-            List<Evenement> childevents = _domainController.GetChildsFromEvent(_evenementenWindow.IdOfSelectedEvent);
+            List<Evenement> childevents = _domainController.GetChildsFromEvent(e);
             _evenementenWindow.ChildEvents = childevents;
-            _evenementenWindow.DescriptionBox.Text = _domainController.GetEventDetails(e.Id);
+            _domainController.GetEventDetails(e);
+            _evenementenWindow.DescriptionBox.Text = e.ToString();
         }
 
         private void EvenementenWindow_PopulateTreeView(object? sender, Evenement e)

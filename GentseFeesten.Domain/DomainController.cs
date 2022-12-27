@@ -20,17 +20,13 @@ namespace GentseFeesten.Domain
 
         }
 
-        public string GetEventDetails(string id)
+        public void GetEventDetails(Evenement evenement)
         {
-            Evenement evenement = GetEventById(id);
             FillInMissingDate(evenement);
-            
-            return evenement.ToString();
         }
 
-        public List<Evenement> GetChildsFromEvent (string id)
+        public List<Evenement> GetChildsFromEvent (Evenement evenement)
         {
-            Evenement evenement = GetEventById(id);
             _evenementenRepository.GetChildEvents(evenement);
             List<Evenement> childEvents = evenement.GetChilds();
             foreach (Evenement childEvent in childEvents)
