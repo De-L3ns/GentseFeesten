@@ -43,8 +43,8 @@
                 <DockPanel Grid.Column ="1" Grid.Row ="1">
                     <Label>Search</Label>
                     <TextBox x:Name="SearchChild" Margin ="8" MaxLength ="100" Width="200" TextChanged="SearchChild_TextChanged"></TextBox>
-                    <Button Margin="8" Width="150">Voeg toe aan planner</Button>
-                    <Button Margin="8" Width="150">Ga naar planner</Button>
+                    <Button x:Name="AddEventToPlannerButton" Margin="8" Width="150" Click="AddEventToPlannerButton_Click">Voeg toe aan planner</Button>
+                    <Button x:Name="GoToPlannerButton" Margin="8" Width="150" Click="GoToPlannerButton_Click">Ga naar planner</Button>
                 </DockPanel>
                 <DataGrid x:Name="ChildEventGrid" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="ChildEventGrid_SelectedCellsChanged">
                     <DataGrid.Columns>

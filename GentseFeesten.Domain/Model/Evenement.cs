@@ -26,8 +26,11 @@ namespace GentseFeesten.Domain.Model
         public List<string?> ChildEventIds { get; init; }
         public DateTime? Start { get; set; }
         public DateTime? End { get; set; }
+        public string StartDateToDatabase { get => Start?.ToString("yyyy-MM-dd HH:mm:ss"); }
+        public string EndDateToDatabase { get => End?.ToString("yyyy-MM-dd HH:mm:ss"); }
         public string Description { get; set; }
         public int? Price { get; set; }
+
 
         public void SetChilds(List<Evenement> childEvents)
         {
@@ -37,13 +40,20 @@ namespace GentseFeesten.Domain.Model
         {
             return _childEvents;
         }
-        private List<string> childEventNames() 
-        {
-            return _childEvents.Select(c => c.Name).ToList();
-        } 
+        
         public override string? ToString()
         {
-            return $"Naam: {this.Name}\nStart: {this.Start}\nEinde: {this.End}\nBeschrijving: {this.Description}\n €{this.Price}\n {String.Join('\n', childEventNames())}";
+            return $"Naam: {this.Name}\nStart: {this.Start}\nEinde: {this.End}\nBeschrijving: {this.Description}\n €{this.Price}";
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Evenement evenement && Id.Equals(evenement.Id);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id);
         }
 
     }

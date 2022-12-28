@@ -1,23 +1,25 @@
 ﻿using GentseFeesten.Domain.Model;
 using GentseFeesten.Domain.Repository;
 using System.Diagnostics;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GentseFeesten.Domain
 {
     public class DomainController
     {
         private readonly IEvenementenRepository _evenementenRepository;
+        private readonly IPlannerRepository _plannerRepository;
 
-        public DomainController(IEvenementenRepository evenementenRepository)
+        public DomainController(IEvenementenRepository evenementenRepository, IPlannerRepository plannerRepository)
         {
             _evenementenRepository = evenementenRepository;
+            _plannerRepository = plannerRepository;
         }
 
         public List<Evenement> GetAllMainEvents()
         {
             List<Evenement> mainEvents = _evenementenRepository.GetMainEvents();
             return mainEvents;
-
         }
 
         public void GetEventDetails(Evenement evenement)
@@ -34,6 +36,31 @@ namespace GentseFeesten.Domain
                 FillInMissingDate(childEvent);
             }
             return childEvents;
+        }
+
+        public List<Evenement> GetEventsFromPlanner()
+        {
+            return _plannerRepository.GetAllEventsOnPlanner();
+        }
+
+        public string GetPlannerSummary()
+        {
+            string summary = "";
+            _plannerRepository.GetAllEventsOnPlanner().ForEach(e => summary += $"{e.Name} - €{e.Price}\n");
+            int totalPrice = _plannerRepository.GetCurrentTotalPrice();
+            summary += $"Totale kostprijs = {totalPrice}";
+
+            return summary;
+        }
+
+        public void AddEventToPlanner(Evenement evenement)
+        {
+            _plannerRepository.AddEventToPlanner(evenement);
+        }
+
+        public void RemoveEventFromPlanner(Evenement evenement)
+        {
+            _plannerRepository.RemoveEventFromPlanner(evenement);
         }
 
         private void FillInMissingDate(Evenement evenement)
@@ -56,10 +83,10 @@ namespace GentseFeesten.Domain
             }
         }
 
-        private Evenement GetEventById(string id)
-        {
-            Evenement evenement = _evenementenRepository.GetEventById(id);
-            return evenement;
-        }
+        //private Evenement GetEventById(string id)
+        //{
+        //    Evenement evenement = _evenementenRepository.GetEventById(id);
+        //    return evenement;
+        //}
     }
 }

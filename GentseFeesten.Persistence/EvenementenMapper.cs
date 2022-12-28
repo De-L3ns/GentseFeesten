@@ -11,7 +11,7 @@ namespace GentseFeesten.Persistence
     {
         // Database related private fields
         private const string ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=GentseFeesten;Integrated Security=True; Encrypt=False";
-        private SqlConnection _sqlConnection;
+        private readonly SqlConnection _sqlConnection;
         
         // Data related private fields
         private List<Evenement> _allMainEvents= new List<Evenement>();

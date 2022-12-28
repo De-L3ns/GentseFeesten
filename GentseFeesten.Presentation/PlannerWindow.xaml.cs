@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GentseFeesten.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,9 +18,19 @@ namespace GentseFeesten.Presentation
     /// <summary>
     /// Interaction logic for PlannerWindows.xaml
     /// </summary>
-    public partial class PlannerWindows : Window
+    public partial class PlannerWindow : Window
     {
-        public PlannerWindows()
+        private List<Evenement> _plannerEvents;
+        public List<Evenement> PlannerEvents
+        {
+            get => _plannerEvents;
+            set
+            {
+                _plannerEvents = value;
+                PlannerGrid.ItemsSource = _plannerEvents;
+            }
+        }
+        public PlannerWindow()
         {
             InitializeComponent();
         }

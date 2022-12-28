@@ -19,8 +19,9 @@ namespace GentseFeesten.StartUp
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            IEvenementenRepository repository = new EvenementenMapper();
-            DomainController domainController = new DomainController(repository);
+            IEvenementenRepository evenementenRepository = new EvenementenMapper();
+            IPlannerRepository plannerRepository = new PlannerMapper();
+            DomainController domainController = new DomainController(evenementenRepository, plannerRepository);
             GentseFeestenApplication application = new GentseFeestenApplication(domainController);
         }
     }

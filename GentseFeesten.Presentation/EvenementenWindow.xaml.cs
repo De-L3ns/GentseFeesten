@@ -20,6 +20,8 @@ namespace GentseFeesten.Presentation
     public partial class EvenementenWindow : Window
     {
         public event EventHandler<Evenement> EventSelected;
+        public event EventHandler GoToPlannerButtonClicked;
+        public event EventHandler<Evenement>AddEventToPlannerButtonClicked;
         private List<Evenement> _mainEvents;
         private List<Evenement> _childEvents;
 
@@ -30,6 +32,8 @@ namespace GentseFeesten.Presentation
 
         public string IdOfSelectedEvent { get; set; }
         public string NameOfSelectedEvent { get; set; }
+
+        public Evenement SelectedEvenement { get; set; }
         
         public List<Evenement> MainEvents
         {
@@ -70,6 +74,16 @@ namespace GentseFeesten.Presentation
             SearchBoxHelper(sender, ChildEvents, ChildEventGrid);
         }
 
+        private void GoToPlannerButton_Click(object sender, RoutedEventArgs e)
+        {
+            GoToPlannerButtonClicked?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void AddEventToPlannerButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddEventToPlannerButtonClicked?.Invoke(this, SelectedEvenement);
+        }
+
         // Helper Methods
 
         private void SelectedCellsChangedHelper(DataGrid grid)
@@ -79,7 +93,7 @@ namespace GentseFeesten.Presentation
                 Evenement evenement = (Evenement)grid.SelectedItem;
                 IdOfSelectedEvent = evenement.Id;
                 NameOfSelectedEvent = evenement.Name;
-
+                SelectedEvenement = evenement;
                 EventSelected?.Invoke(this, evenement);
             }
         }
@@ -93,5 +107,7 @@ namespace GentseFeesten.Presentation
                 grid.ItemsSource = filteredNames;
             }
         }
+
+      
     }
 }

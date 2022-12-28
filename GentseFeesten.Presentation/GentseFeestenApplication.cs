@@ -12,17 +12,20 @@ namespace GentseFeesten.Presentation
     {
         private readonly DomainController _domainController;
         private EvenementenWindow _evenementenWindow;
+        private PlannerWindow _plannerWindow;
 
         public GentseFeestenApplication(DomainController domainController)
         {
             _domainController = domainController;
+
             _evenementenWindow= new EvenementenWindow();
             _evenementenWindow.Show();
             _evenementenWindow.MainEvents = domainController.GetAllMainEvents();
             _evenementenWindow.EventSelected += EvenementenWindow_EvenementSelected;
+            _evenementenWindow.GoToPlannerButtonClicked += EvenementenWindow_GoToPlanner;
+            _evenementenWindow.AddEventToPlannerButtonClicked += EvenementenWindow_AddEventToPlanner;
             _evenementenWindow.EventSelected += EvenementenWindow_PopulateTreeView;
-            
-            
+
         }
 
         private void EvenementenWindow_EvenementSelected(object? sender, Evenement e)
@@ -31,6 +34,21 @@ namespace GentseFeesten.Presentation
             _evenementenWindow.ChildEvents = childevents;
             _domainController.GetEventDetails(e);
             _evenementenWindow.DescriptionBox.Text = e.ToString();
+        }
+
+        private void EvenementenWindow_GoToPlanner(object? sender, EventArgs e)
+        {
+            _evenementenWindow.Hide();
+            _plannerWindow = new PlannerWindow();
+            _plannerWindow.Show();
+            _plannerWindow.PlannerEvents = _domainController.GetEventsFromPlanner();
+            _plannerWindow.SummaryTextBox.Text = _domainController.GetPlannerSummary();
+        }
+
+        private void EvenementenWindow_AddEventToPlanner(object? sender, Evenement e)
+        {
+            _domainController.AddEventToPlanner(e);
+            MessageBox.Show($"{e.Name} werd aan uw planner toegevoegd");
         }
 
         private void EvenementenWindow_PopulateTreeView(object? sender, Evenement e)
