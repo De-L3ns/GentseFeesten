@@ -17,8 +17,9 @@ namespace GentseFeesten.Presentation
         public GentseFeestenApplication(DomainController domainController)
         {
             _domainController = domainController;
-
             _evenementenWindow= new EvenementenWindow();
+            _plannerWindow = new PlannerWindow();
+
             _evenementenWindow.Show();
             _evenementenWindow.MainEvents = domainController.GetAllMainEvents();
             _evenementenWindow.EventSelected += EvenementenWindow_EvenementSelected;
@@ -34,21 +35,47 @@ namespace GentseFeesten.Presentation
             _evenementenWindow.ChildEvents = childevents;
             _domainController.GetEventDetails(e);
             _evenementenWindow.DescriptionBox.Text = e.ToString();
+            _evenementenWindow.AddEventToPlannerButton.IsEnabled = true;
         }
 
         private void EvenementenWindow_GoToPlanner(object? sender, EventArgs e)
         {
             _evenementenWindow.Hide();
-            _plannerWindow = new PlannerWindow();
             _plannerWindow.Show();
-            _plannerWindow.PlannerEvents = _domainController.GetEventsFromPlanner();
-            _plannerWindow.SummaryTextBox.Text = _domainController.GetPlannerSummary();
+            RefreshPlannerWindowData();
+            _plannerWindow.PlannerEventSelected += PlannerWindow_EventSelected;
+            _plannerWindow.RemoveEventButtonClicked += PlannerWindow_RemoveEvent;
+            _plannerWindow.ReturnToEvenementenButtonClicked += PlannerWindow_ReturnToEvents;
         }
 
         private void EvenementenWindow_AddEventToPlanner(object? sender, Evenement e)
         {
             _domainController.AddEventToPlanner(e);
             MessageBox.Show($"{e.Name} werd aan uw planner toegevoegd");
+        }
+
+        private void PlannerWindow_EventSelected(object? sender, EventArgs e)
+        {
+            _plannerWindow.RemoveEventButton.IsEnabled = true;
+        }
+
+        private void PlannerWindow_RemoveEvent(object? sender, Evenement e) 
+        { 
+            _domainController.RemoveEventFromPlanner(e);
+            MessageBox.Show($"{e.Name} werd verwijderd van uw planner");
+            RefreshPlannerWindowData();
+        }
+
+        private void PlannerWindow_ReturnToEvents(object? sender, EventArgs e)
+        {
+            _plannerWindow.Hide();
+            _evenementenWindow.Show();
+        }
+
+        private void RefreshPlannerWindowData()
+        {
+            _plannerWindow.PlannerEvents = _domainController.GetEventsFromPlanner();
+            _plannerWindow.SummaryTextBox.Text = _domainController.GetPlannerSummary();
         }
 
         private void EvenementenWindow_PopulateTreeView(object? sender, Evenement e)

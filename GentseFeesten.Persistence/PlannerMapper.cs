@@ -101,7 +101,7 @@ namespace GentseFeesten.Persistence
             try
             {
                 _sqlConnection.Open();
-                SqlCommand command = new SqlCommand($"DELETE FROM Personen WHERE id = @Id;", _sqlConnection);
+                SqlCommand command = new SqlCommand($"DELETE FROM Planner WHERE id = @Id;", _sqlConnection);
 
                 command.Parameters.Add("@Id", SqlDbType.VarChar);
                 command.Parameters["@Id"].Value = evenement.Id;

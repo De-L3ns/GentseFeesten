@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GentseFeesten.Presentation"
         mc:Ignorable="d"
-        Title="EvenementenWindow" Height="600" Width="1200">
+        Title="Evenementen" Height="600" Width="1200">
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -43,7 +43,7 @@
                 <DockPanel Grid.Column ="1" Grid.Row ="1">
                     <Label>Search</Label>
                     <TextBox x:Name="SearchChild" Margin ="8" MaxLength ="100" Width="200" TextChanged="SearchChild_TextChanged"></TextBox>
-                    <Button x:Name="AddEventToPlannerButton" Margin="8" Width="150" Click="AddEventToPlannerButton_Click">Voeg toe aan planner</Button>
+                    <Button x:Name="AddEventToPlannerButton" IsEnabled="False" Margin="8" Width="150" Click="AddEventToPlannerButton_Click">Voeg toe aan planner</Button>
                     <Button x:Name="GoToPlannerButton" Margin="8" Width="150" Click="GoToPlannerButton_Click">Ga naar planner</Button>
                 </DockPanel>
                 <DataGrid x:Name="ChildEventGrid" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="ChildEventGrid_SelectedCellsChanged">

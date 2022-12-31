@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GentseFeesten.Presentation"
         mc:Ignorable="d"
-        Title="Planner" Height="450" Width="800">
+        Title="Planner" Height="600" Width="1200">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -19,7 +19,7 @@
             <Label>Planner: Gentse Feesten</Label>
             <TextBlock>Uw geplande evenementen:</TextBlock>
         </StackPanel>
-            <DataGrid x:Name="PlannerGrid" Grid.Column ="0" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single">
+            <DataGrid x:Name="PlannerGrid" Grid.Column ="0" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="PlannerGrid_SelectedCellsChanged">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
                 <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Name}"/>
@@ -29,6 +29,19 @@
             </DataGrid.Columns>
         </DataGrid>
         <Label Grid.Column="1" Grid.Row="0">Overzicht kostprijs</Label>
-        <TextBox Grid.Column="1" Grid.Row="1" x:Name="SummaryTextBox"></TextBox>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="60"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" x:Name="SummaryTextBox"></TextBox>
+            <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
+                <Button x:Name="RemoveEventButton" IsEnabled ="False" MaxHeight="50" MaxWidth="150" Margin="5" Click="DeleteEventButton_Click">Verwijder Evenement</Button>
+                <Button x:Name="ReturnToEventsButton" MaxHeight="50" MaxWidth="150" Margin="5" Click="ReturnToEventsButton_Click" >Terug naar Evenementen</Button>
+            </StackPanel>
+            
+        </Grid>
+        
+        
     </Grid>
 </Window>
