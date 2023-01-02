@@ -1,6 +1,8 @@
-﻿namespace GentseFeesten.Domain.Model
+﻿using System.Collections;
+
+namespace GentseFeesten.Domain.Model
 {
-    public class Evenement
+    public class Evenement 
     {
         private List<Evenement> _childEvents = new List<Evenement>();
         public Evenement(string id, string name, List<string?> childEventIds, DateTime? start, DateTime? end, string description, int? price)
@@ -64,5 +66,12 @@
             return HashCode.Combine(Id);
         }
 
+        public void CheckTimeWithOtherEvent(Evenement e)
+        {
+            if ((e.Start >= this.Start && e.Start <= this.End) || e.End >= this.Start && e.End <= this.End ) {
+
+                throw new Exception($"Dit evenement is op hetzelfde momennt als: {this.Name}");
+            }
+        }
     }
 }

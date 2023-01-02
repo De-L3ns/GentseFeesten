@@ -23,7 +23,6 @@
             </DockPanel>
             <DataGrid x:Name="MainEventGrid" Grid.Column="0" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="MainEventGrid_SelectedCellsChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
                     <DataGridTextColumn Width="*" Header="Hoofdevenementen" Binding="{Binding Name}" />
                 </DataGrid.Columns>
             </DataGrid>
@@ -41,16 +40,23 @@
                 </Grid.RowDefinitions>
                 
                 <Label x:Name="TitleLabel" Grid.Row="0" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"></Label>
-                <TextBlock x:Name="DescriptionBox" Grid.Row="1" FontSize="14" TextAlignment="Center" TextWrapping="Wrap" Margin="5"></TextBlock>
-                <DockPanel Grid.Column ="1" Grid.Row ="2">
-                    <Label VerticalAlignment="Center">Search</Label>
-                    <TextBox x:Name="SearchChild" Margin ="8" MaxLength ="100" Width="200" TextChanged="SearchChild_TextChanged"></TextBox>
-                    <Button x:Name="AddEventToPlannerButton" IsEnabled="False" Height ="25" Width="150" HorizontalAlignment="Right" Click="AddEventToPlannerButton_Click">Voeg toe aan planner</Button>
-                    <Button x:Name="GoToPlannerButton" Height="25" Width="150" Click="GoToPlannerButton_Click">Ga naar planner</Button>
-                </DockPanel>
+                <TextBlock x:Name="DescriptionBox" Grid.Row="1" FontSize="14" TextAlignment="Center" TextWrapping="Wrap" Padding="5" ></TextBlock>
+                <Grid Grid.Column ="1" Grid.Row ="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width ="50"></ColumnDefinition>
+                        <ColumnDefinition Width ="*"></ColumnDefinition>
+                        <ColumnDefinition Width ="*"></ColumnDefinition>
+                        <ColumnDefinition Width ="*"></ColumnDefinition>
+                        <ColumnDefinition Width ="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0" VerticalAlignment="Center">Search</Label>
+                    <TextBox x:Name="SearchChild" Grid.Column ="1" MaxHeight="30" MaxLength ="150"  TextChanged="SearchChild_TextChanged"></TextBox>
+                    <Button x:Name="AddEventToPlannerButton" Grid.Column ="2" IsEnabled="False" MaxHeight="30" MaxWidth="150" Click="AddEventToPlannerButton_Click">Voeg toe aan planner</Button>
+                    <Button x:Name="GoToPlannerButton" Grid.Column ="3" MaxHeight="30" MaxWidth="150" Click="GoToPlannerButton_Click">Ga naar planner</Button>
+                    <Button x:Name="ReturnToPreviousButton" Grid.Column ="4" IsEnabled="False" MaxHeight="30" MaxWidth="150" Click="ReturnToPreviousButton_Click">Vorig Evenement</Button>
+                </Grid>
                 <DataGrid x:Name="ChildEventGrid" Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="ChildEventGrid_SelectedCellsChanged">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
                         <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Name}"/>
                         <DataGridTextColumn Width="*" Header="Start" Binding="{Binding Start}"/>
                         <DataGridTextColumn Width="*" Header="Einde" Binding="{Binding End}"/>
@@ -59,9 +65,5 @@
                 </DataGrid>
             </Grid>
         </Grid>
-
-        
-
-
     </Grid>
 </Window>

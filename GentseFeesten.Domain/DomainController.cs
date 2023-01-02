@@ -59,6 +59,14 @@ namespace GentseFeesten.Domain
 
         public void AddEventToPlanner(Evenement evenement)
         {
+            List<Evenement> listToCheck = GetEventsFromPlanner();
+            
+            if (listToCheck.Contains(evenement))
+            {
+                throw new Exception("Dit Evenement staat reeds op de planner.");
+            }
+                
+            listToCheck.ForEach(e => { e.CheckTimeWithOtherEvent(evenement); });
             _plannerRepository.AddEventToPlanner(evenement);
         }
 

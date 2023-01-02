@@ -35,6 +35,12 @@ namespace GentseFeesten.Presentation
             _evenementenWindow.TitleLabel.Content = e.ToString();
             _evenementenWindow.DescriptionBox.Text = _domainController.GetEventInformation(e);
             _evenementenWindow.AddEventToPlannerButton.IsEnabled = true;
+            
+            if (e is ChildEvenement)
+            {
+                _evenementenWindow.ReturnToPreviousButton.IsEnabled = true;
+            }
+            
             FillInNavigationBar(e);
 
         }
@@ -51,8 +57,15 @@ namespace GentseFeesten.Presentation
 
         private void EvenementenWindow_AddEventToPlanner(object? sender, Evenement e)
         {
-            _domainController.AddEventToPlanner(e);
-            MessageBox.Show($"{e.Name} werd aan uw planner toegevoegd");
+            try
+            {
+                _domainController.AddEventToPlanner(e);
+                MessageBox.Show($"{e.Name} werd aan uw planner toegevoegd");
+            } catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private void PlannerWindow_EventSelected(object? sender, EventArgs e)

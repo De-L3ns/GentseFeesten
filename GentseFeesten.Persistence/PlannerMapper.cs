@@ -36,21 +36,15 @@ namespace GentseFeesten.Persistence
 
         public void AddEventToPlanner(Evenement evenement)
         {
-            if (!_eventsOnPlanner.Contains(evenement))
-            {
-                AddEventToPlannerDatabase(evenement);
-                _eventsOnPlanner.Add((PlannerEvenement)evenement);
-            }
-            else
-            {
-                throw new Exception("The Event is allready on the planner");
-            }
+            AddEventToPlannerDatabase(evenement);
+            _eventsOnPlanner.Add(evenement);
+            
         }
 
         public void RemoveEventFromPlanner(Evenement evenement)
         {
             RemoveEventFromPlannerDatabase(evenement);
-            _eventsOnPlanner.Remove((PlannerEvenement)evenement);
+            _eventsOnPlanner.Remove(evenement);
 
         }
 

@@ -23,6 +23,7 @@ namespace GentseFeesten.Presentation
 
 
         public Evenement SelectedEvenement { get; set; }
+        public Evenement PreviouslySelectedEvenement { get; set; }
 
         public List<Evenement> MainEvents
         {
@@ -73,12 +74,18 @@ namespace GentseFeesten.Presentation
             AddEventToPlannerButtonClicked?.Invoke(this, SelectedEvenement);
         }
 
+        private void ReturnToPreviousButton_Click(object sender, RoutedEventArgs e)
+        {
+            EventSelected?.Invoke(this, PreviouslySelectedEvenement);
+        }
+
         // Helper Methods
 
         private void SelectedCellsChangedHelper(DataGrid grid)
         {
             if (grid.SelectedItem != null)
             {
+                PreviouslySelectedEvenement = SelectedEvenement;
                 Evenement evenement = (Evenement)grid.SelectedItem;
                 SelectedEvenement = evenement;
                 EventSelected?.Invoke(this, evenement);
@@ -95,6 +102,6 @@ namespace GentseFeesten.Presentation
             }
         }
 
-
+        
     }
 }
