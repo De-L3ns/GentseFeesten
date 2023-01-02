@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GentseFeesten.Domain.Model
+﻿namespace GentseFeesten.Domain.Model
 {
     public class Evenement
     {
@@ -40,10 +33,25 @@ namespace GentseFeesten.Domain.Model
         {
             return _childEvents;
         }
-        
+
         public override string? ToString()
         {
-            return $"Naam: {this.Name}\nStart: {this.Start}\nEinde: {this.End}\nBeschrijving: {this.Description}\n €{this.Price}";
+            return $"{this.Name}";
+        }
+
+        public void AlterDescription()
+        {
+
+        }
+
+        public virtual string GetInformation()
+        {
+            if (string.IsNullOrEmpty(this.Description))
+            {
+                return $"Van {this.Start} - Tot {this.End}\n€{this.Price}";
+            }
+
+            return $"Van {this.Start} - Tot {this.End}\nBeschrijving: {this.Description}\nKostprijs: €{this.Price}";
         }
 
         public override bool Equals(object? obj)

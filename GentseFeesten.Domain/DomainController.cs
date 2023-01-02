@@ -1,7 +1,5 @@
 ﻿using GentseFeesten.Domain.Model;
 using GentseFeesten.Domain.Repository;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
 
 namespace GentseFeesten.Domain
 {
@@ -16,18 +14,14 @@ namespace GentseFeesten.Domain
             _plannerRepository = plannerRepository;
         }
 
+        // Event Methods
         public List<Evenement> GetAllMainEvents()
         {
             List<Evenement> mainEvents = _evenementenRepository.GetMainEvents();
             return mainEvents;
         }
 
-        public void GetEventDetails(Evenement evenement)
-        {
-            FillInMissingDate(evenement);
-        }
-
-        public List<Evenement> GetChildsFromEvent (Evenement evenement)
+        public List<Evenement> GetChildsFromEvent(Evenement evenement)
         {
             _evenementenRepository.GetChildEvents(evenement);
             List<Evenement> childEvents = evenement.GetChilds();
@@ -37,7 +31,17 @@ namespace GentseFeesten.Domain
             }
             return childEvents;
         }
+        public void GetEventDetails(Evenement evenement)
+        {
+            FillInMissingDate(evenement);
+        }
 
+        public string GetEventInformation(Evenement evenement)
+        {
+            return evenement.GetInformation();
+        }
+
+        // Planner Methods
         public List<Evenement> GetEventsFromPlanner()
         {
             return _plannerRepository.GetAllEventsOnPlanner();
@@ -46,7 +50,7 @@ namespace GentseFeesten.Domain
         public string GetPlannerSummary()
         {
             string summary = "";
-            _plannerRepository.GetAllEventsOnPlanner().ForEach(e => summary += $"{e.Name} - €{e.Price}\n");
+            _plannerRepository.GetAllEventsOnPlanner().ForEach(e => summary += $"{e}");
             int totalPrice = _plannerRepository.GetCurrentTotalPrice();
             summary += $"Totale kostprijs = {totalPrice}";
 
@@ -63,6 +67,7 @@ namespace GentseFeesten.Domain
             _plannerRepository.RemoveEventFromPlanner(evenement);
         }
 
+        // Private Helper Methods
         private void FillInMissingDate(Evenement evenement)
         {
             if (evenement.Start == null)
@@ -70,13 +75,13 @@ namespace GentseFeesten.Domain
                 List<DateTime?> startDates = _evenementenRepository.GetMissingStartData(evenement).OrderBy(x => x).ToList();
                 evenement.Start = startDates.First();
             }
-            
+
             if (evenement.End == null)
             {
                 List<DateTime?> endDates = _evenementenRepository.GetMissingEndData(evenement).OrderByDescending(x => x).ToList();
                 evenement.End = endDates.First();
             }
-            
+
             if (evenement.Price == null)
             {
                 evenement.Price = _evenementenRepository.GetMissingPriceData(evenement);

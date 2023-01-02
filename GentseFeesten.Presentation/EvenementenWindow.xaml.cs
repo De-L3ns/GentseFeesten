@@ -3,17 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GentseFeesten.Presentation
 {
@@ -21,7 +12,7 @@ namespace GentseFeesten.Presentation
     {
         public event EventHandler<Evenement> EventSelected;
         public event EventHandler GoToPlannerButtonClicked;
-        public event EventHandler<Evenement>AddEventToPlannerButtonClicked;
+        public event EventHandler<Evenement> AddEventToPlannerButtonClicked;
         private List<Evenement> _mainEvents;
         private List<Evenement> _childEvents;
 
@@ -30,11 +21,9 @@ namespace GentseFeesten.Presentation
             InitializeComponent();
         }
 
-        public string IdOfSelectedEvent { get; set; }
-        public string NameOfSelectedEvent { get; set; }
 
         public Evenement SelectedEvenement { get; set; }
-        
+
         public List<Evenement> MainEvents
         {
             get => _mainEvents;
@@ -91,14 +80,12 @@ namespace GentseFeesten.Presentation
             if (grid.SelectedItem != null)
             {
                 Evenement evenement = (Evenement)grid.SelectedItem;
-                IdOfSelectedEvent = evenement.Id;
-                NameOfSelectedEvent = evenement.Name;
                 SelectedEvenement = evenement;
                 EventSelected?.Invoke(this, evenement);
             }
         }
 
-        private void SearchBoxHelper(object sender, List<Evenement> gridSource, DataGrid grid )
+        private void SearchBoxHelper(object sender, List<Evenement> gridSource, DataGrid grid)
         {
             var mainTextSearch = sender as TextBox;
             if (mainTextSearch.Text != null)
@@ -108,6 +95,6 @@ namespace GentseFeesten.Presentation
             }
         }
 
-      
+
     }
 }

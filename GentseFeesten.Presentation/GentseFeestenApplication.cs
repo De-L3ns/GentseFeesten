@@ -1,23 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Controls;
 using GentseFeesten.Domain;
 using GentseFeesten.Domain.Model;
+using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace GentseFeesten.Presentation
 {
     public class GentseFeestenApplication
     {
         private readonly DomainController _domainController;
-        private EvenementenWindow _evenementenWindow;
-        private PlannerWindow _plannerWindow;
+        private readonly EvenementenWindow _evenementenWindow;
+        private readonly PlannerWindow _plannerWindow;
 
         public GentseFeestenApplication(DomainController domainController)
         {
             _domainController = domainController;
-            _evenementenWindow= new EvenementenWindow();
+            _evenementenWindow = new EvenementenWindow();
             _plannerWindow = new PlannerWindow();
 
             _evenementenWindow.Show();
@@ -25,7 +24,6 @@ namespace GentseFeesten.Presentation
             _evenementenWindow.EventSelected += EvenementenWindow_EvenementSelected;
             _evenementenWindow.GoToPlannerButtonClicked += EvenementenWindow_GoToPlanner;
             _evenementenWindow.AddEventToPlannerButtonClicked += EvenementenWindow_AddEventToPlanner;
-            _evenementenWindow.EventSelected += EvenementenWindow_PopulateTreeView;
 
         }
 
@@ -34,8 +32,11 @@ namespace GentseFeesten.Presentation
             List<Evenement> childevents = _domainController.GetChildsFromEvent(e);
             _evenementenWindow.ChildEvents = childevents;
             _domainController.GetEventDetails(e);
-            _evenementenWindow.DescriptionBox.Text = e.ToString();
+            _evenementenWindow.TitleLabel.Content = e.ToString();
+            _evenementenWindow.DescriptionBox.Text = _domainController.GetEventInformation(e);
             _evenementenWindow.AddEventToPlannerButton.IsEnabled = true;
+            FillInNavigationBar(e);
+
         }
 
         private void EvenementenWindow_GoToPlanner(object? sender, EventArgs e)
@@ -59,8 +60,8 @@ namespace GentseFeesten.Presentation
             _plannerWindow.RemoveEventButton.IsEnabled = true;
         }
 
-        private void PlannerWindow_RemoveEvent(object? sender, Evenement e) 
-        { 
+        private void PlannerWindow_RemoveEvent(object? sender, Evenement e)
+        {
             _domainController.RemoveEventFromPlanner(e);
             MessageBox.Show($"{e.Name} werd verwijderd van uw planner");
             RefreshPlannerWindowData();
@@ -78,22 +79,23 @@ namespace GentseFeesten.Presentation
             _plannerWindow.SummaryTextBox.Text = _domainController.GetPlannerSummary();
         }
 
-        private void EvenementenWindow_PopulateTreeView(object? sender, Evenement e)
+        private void FillInNavigationBar(Evenement e)
         {
+            Label navigationItem = new Label();
+
             if (e is MainEvenement)
             {
-                _evenementenWindow.EventTreeView.Items.Clear();
-                TreeViewItem mainEvent = new TreeViewItem();
-                mainEvent.Header = _evenementenWindow.NameOfSelectedEvent;
-                _evenementenWindow.EventTreeView.Items.Add(mainEvent);
-            } else
-            {
-                TreeViewItem childEvent = new TreeViewItem();
-                childEvent.Header = _evenementenWindow.NameOfSelectedEvent;
-                TreeViewItem mainEvent = (TreeViewItem)_evenementenWindow.EventTreeView.Items[0];
-                mainEvent.Items.Add(childEvent);
+                _evenementenWindow.NavigationBar.Children.Clear();
+                navigationItem.Content = e.Name;
+
             }
-            
+            else
+            {
+                navigationItem.Content = "-> " + e.Name;
+            }
+
+            _evenementenWindow.NavigationBar.Children.Add(navigationItem);
         }
+
     }
 }

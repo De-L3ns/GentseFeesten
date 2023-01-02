@@ -1,13 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using GentseFeesten.Domain.Model;
+﻿using GentseFeesten.Domain.Model;
 using GentseFeesten.Domain.Repository;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace GentseFeesten.Persistence
 {
@@ -45,8 +39,9 @@ namespace GentseFeesten.Persistence
             if (!_eventsOnPlanner.Contains(evenement))
             {
                 AddEventToPlannerDatabase(evenement);
-                _eventsOnPlanner.Add(evenement);
-            } else
+                _eventsOnPlanner.Add((PlannerEvenement)evenement);
+            }
+            else
             {
                 throw new Exception("The Event is allready on the planner");
             }
@@ -55,7 +50,7 @@ namespace GentseFeesten.Persistence
         public void RemoveEventFromPlanner(Evenement evenement)
         {
             RemoveEventFromPlannerDatabase(evenement);
-            _eventsOnPlanner.Remove(evenement);
+            _eventsOnPlanner.Remove((PlannerEvenement)evenement);
 
         }
 
@@ -87,7 +82,7 @@ namespace GentseFeesten.Persistence
                 command.Parameters["@price"].Value = evenement.Price;
 
                 command.ExecuteScalar();
-                
+
             }
 
             finally
@@ -107,7 +102,7 @@ namespace GentseFeesten.Persistence
                 command.Parameters["@Id"].Value = evenement.Id;
 
                 command.ExecuteNonQuery();
-                
+
 
             }
             finally
@@ -132,13 +127,11 @@ namespace GentseFeesten.Persistence
                         string id = (string)reader["Id"];
                         DateTime? end = (reader["End"] == DBNull.Value) ? null : (DateTime?)reader["End"];
                         DateTime? start = (reader["Start"] == DBNull.Value) ? null : (DateTime?)reader["Start"];
-                        // string? childIds = (reader["Childs"] == DBNull.Value) ? null : (string?)reader["Childs"];
-                        // List<string>? childIdsToList = childIds?.Split(",").ToList();
                         string? description = (reader["Description"] == DBNull.Value) ? null : (string?)reader["Description"];
                         string? name = (string)reader["Name"];
                         int? price = (reader["Price"] == DBNull.Value) ? null : (int?)reader["Price"];
 
-                        eventsFromDatabase.Add(new Evenement(id, name, null, start, end, description, price));
+                        eventsFromDatabase.Add(new PlannerEvenement(id, name, start, end, description, price));
                     }
                 }
 

@@ -12,12 +12,12 @@
             <ColumnDefinition Width="1*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Column ="0" Grid.Row="0">
-            <Label>Planner: Gentse Feesten</Label>
-            <TextBlock>Uw geplande evenementen:</TextBlock>
+            <Label FontWeight="Bold" FontSize="16">Uw Planner</Label>
+            <Label>Ingeplande Evenementen</Label>
         </StackPanel>
             <DataGrid x:Name="PlannerGrid" Grid.Column ="0" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="PlannerGrid_SelectedCellsChanged">
             <DataGrid.Columns>
@@ -28,7 +28,7 @@
                 <DataGridTextColumn Width="*" Header="Prijs" Binding="{Binding Price}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Label Grid.Column="1" Grid.Row="0">Overzicht kostprijs</Label>
+        <Label Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center">Overzicht kostprijs</Label>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"></RowDefinition>

@@ -9,7 +9,6 @@
     <Grid>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" MaxWidth="300" MinWidth="100"></ColumnDefinition>
                 <ColumnDefinition Width="1*"></ColumnDefinition>
                 <ColumnDefinition Width="2*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
@@ -18,35 +17,38 @@
                 <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height="1*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Label Grid.Column="1">Hoofdevenementen</Label>
-            <DockPanel Grid.Column ="1" Grid.Row ="1">
-                <Label>Search</Label>
+            <DockPanel Grid.Column ="0" Grid.Row ="1">
+                <Label VerticalAlignment="Center">Search</Label>
                 <TextBox x:Name="SearchMain"  Margin ="8" MaxLength ="100" Width="200" TextChanged="SearchMain_TextChanged"></TextBox>
             </DockPanel>
-            <DataGrid x:Name="MainEventGrid" Grid.Column="1" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="MainEventGrid_SelectedCellsChanged">
+            <DataGrid x:Name="MainEventGrid" Grid.Column="0" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="MainEventGrid_SelectedCellsChanged">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
-                    <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Name}" />
+                    <DataGridTextColumn Width="*" Header="Hoofdevenementen" Binding="{Binding Name}" />
                 </DataGrid.Columns>
             </DataGrid>
             <Label>Gentse Feesten 2023</Label>
-            <Label Grid.Column="0" Grid.Row="1">Structuur Evenement</Label>
             <Label Grid.Column="2">Details Evenement</Label>
-            <TreeView x:Name="EventTreeView" Grid.Column="0" Grid.Row="2"></TreeView>
+            <DockPanel x:Name="NavigationBar" Grid.Row="1" Grid.Column="2" HorizontalAlignment="left" VerticalAlignment="Center">
+                
+            </DockPanel>
             <Grid Grid.Row="2" Grid.Column="2">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="40"></RowDefinition>
                     <RowDefinition Height ="2*"></RowDefinition>
                     <RowDefinition Height ="40"></RowDefinition>
                     <RowDefinition Height ="1*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <TextBlock x:Name="DescriptionBox" Grid.Row="0" FontWeight="Bold" FontSize="18" TextAlignment="Center" TextWrapping="Wrap"></TextBlock>
-                <DockPanel Grid.Column ="1" Grid.Row ="1">
-                    <Label>Search</Label>
+                
+                <Label x:Name="TitleLabel" Grid.Row="0" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"></Label>
+                <TextBlock x:Name="DescriptionBox" Grid.Row="1" FontSize="14" TextAlignment="Center" TextWrapping="Wrap" Margin="5"></TextBlock>
+                <DockPanel Grid.Column ="1" Grid.Row ="2">
+                    <Label VerticalAlignment="Center">Search</Label>
                     <TextBox x:Name="SearchChild" Margin ="8" MaxLength ="100" Width="200" TextChanged="SearchChild_TextChanged"></TextBox>
-                    <Button x:Name="AddEventToPlannerButton" IsEnabled="False" Margin="8" Width="150" Click="AddEventToPlannerButton_Click">Voeg toe aan planner</Button>
-                    <Button x:Name="GoToPlannerButton" Margin="8" Width="150" Click="GoToPlannerButton_Click">Ga naar planner</Button>
+                    <Button x:Name="AddEventToPlannerButton" IsEnabled="False" Height ="25" Width="150" HorizontalAlignment="Right" Click="AddEventToPlannerButton_Click">Voeg toe aan planner</Button>
+                    <Button x:Name="GoToPlannerButton" Height="25" Width="150" Click="GoToPlannerButton_Click">Ga naar planner</Button>
                 </DockPanel>
-                <DataGrid x:Name="ChildEventGrid" Grid.Row="2" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="ChildEventGrid_SelectedCellsChanged">
+                <DataGrid x:Name="ChildEventGrid" Grid.Row="3" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="ChildEventGrid_SelectedCellsChanged">
                     <DataGrid.Columns>
                         <DataGridTextColumn Binding="{Binding Id}" Visibility="Hidden"></DataGridTextColumn>
                         <DataGridTextColumn Width="*" Header="Naam" Binding="{Binding Name}"/>

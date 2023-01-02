@@ -1,8 +1,6 @@
 ﻿using GentseFeesten.Domain.Model;
 using GentseFeesten.Domain.Repository;
 using Microsoft.Data.SqlClient;
-using System.Data.Common;
-using System;
 using System.Data;
 
 namespace GentseFeesten.Persistence
@@ -12,9 +10,9 @@ namespace GentseFeesten.Persistence
         // Database related private fields
         private const string ConnectionString = @"Data Source=.\SQLEXPRESS;Initial Catalog=GentseFeesten;Integrated Security=True; Encrypt=False";
         private readonly SqlConnection _sqlConnection;
-        
+
         // Data related private fields
-        private List<Evenement> _allMainEvents= new List<Evenement>();
+        private List<Evenement> _allMainEvents = new List<Evenement>();
         private List<DateTime?> _dateTimesToWorkWith = new List<DateTime?>();
         private int _totalPrice = 0;
 
@@ -99,7 +97,7 @@ namespace GentseFeesten.Persistence
                     DataTable dt = new DataTable();
                     dt.Load(reader);
 
-                    foreach(DataRow dr in dt.Rows)
+                    foreach (DataRow dr in dt.Rows)
                     {
                         string id = (string)dr["Id"];
                         DateTime? childDateTime = (dr[columnName] == DBNull.Value) ? null : (DateTime?)dr[columnName];
@@ -107,9 +105,10 @@ namespace GentseFeesten.Persistence
                         {
                             _sqlConnection.Close();
                             GetMissingDateTimes(GetEventById(id), columnName);
-                            
 
-                        } else
+
+                        }
+                        else
                         {
                             _dateTimesToWorkWith.Add(childDateTime);
                         }
@@ -119,15 +118,16 @@ namespace GentseFeesten.Persistence
                 return _dateTimesToWorkWith;
             }
 
-            finally { 
+            finally
+            {
                 _sqlConnection.Close();
-                
+
             }
         }
-        
+
         private int GetMissingPrice(Evenement evenement)
         {
-            
+
             try
             {
                 _sqlConnection.Open();
@@ -147,7 +147,8 @@ namespace GentseFeesten.Persistence
                         {
                             _sqlConnection.Close();
                             GetMissingPrice(GetEventById(id));
-                        } else
+                        }
+                        else
                         {
                             _totalPrice += (int)prijs;
                         }
@@ -161,7 +162,7 @@ namespace GentseFeesten.Persistence
                 _sqlConnection.Close();
             }
         }
-    
+
 
         public void GetChildEvents(Evenement evenement)
         {
@@ -231,7 +232,7 @@ namespace GentseFeesten.Persistence
                             _allMainEvents.Add(newEvenement);
                             evenement = newEvenement;
                         }
-                    } 
+                    }
                 }
                 finally
                 {
