@@ -1,4 +1,5 @@
-﻿using GentseFeesten.Domain.Model;
+﻿using GentseFeesten.Domain;
+using GentseFeesten.Domain.Model;
 using GentseFeesten.Domain.Repository;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -59,6 +60,10 @@ namespace GentseFeesten.Persistence
                     }
                 }
             }
+            catch
+            {
+                throw new DatabaseErrorException("GetParentEvents");
+            }
             finally
             {
                 _sqlConnection.Close();
@@ -117,6 +122,10 @@ namespace GentseFeesten.Persistence
                 }
                 return _dateTimesToWorkWith;
             }
+            catch
+            {
+                throw new DatabaseErrorException("GetMissingDateTimes");
+            }
 
             finally
             {
@@ -156,6 +165,10 @@ namespace GentseFeesten.Persistence
                 }
 
                 return _totalPrice;
+            }
+            catch
+            {
+                throw new DatabaseErrorException("GetMissingPrice");
             }
             finally
             {
@@ -198,6 +211,10 @@ namespace GentseFeesten.Persistence
                 evenement.SetChilds(listOfChilds);
 
             }
+            catch
+            {
+                throw new DatabaseErrorException("GetChildEvents");
+            }
             finally { _sqlConnection.Close(); }
         }
 
@@ -233,6 +250,10 @@ namespace GentseFeesten.Persistence
                             evenement = newEvenement;
                         }
                     }
+                }
+                catch
+                {
+                    throw new DatabaseErrorException("GetEventById");
                 }
                 finally
                 {

@@ -1,4 +1,5 @@
-﻿using GentseFeesten.Domain.Model;
+﻿using GentseFeesten.Domain;
+using GentseFeesten.Domain.Model;
 using GentseFeesten.Domain.Repository;
 using Microsoft.Data.SqlClient;
 using System.Data;
@@ -79,6 +80,11 @@ namespace GentseFeesten.Persistence
 
             }
 
+            catch
+            {
+                throw new DatabaseErrorException("AddEventToPlanner");
+            }
+
             finally
             {
                 _sqlConnection.Close();
@@ -98,6 +104,10 @@ namespace GentseFeesten.Persistence
                 command.ExecuteNonQuery();
 
 
+            }
+            catch
+            {
+                throw new DatabaseErrorException("RemoveEventFromPlanner");
             }
             finally
             {
@@ -130,6 +140,11 @@ namespace GentseFeesten.Persistence
                 }
 
                 _eventsOnPlanner = eventsFromDatabase;
+            }
+
+            catch
+            {
+                throw new DatabaseErrorException("GetEventsFromPlanner");
             }
             finally
             {

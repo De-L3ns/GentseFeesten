@@ -52,7 +52,7 @@ namespace GentseFeesten.Domain
             string summary = "";
             _plannerRepository.GetAllEventsOnPlanner().ForEach(e => summary += $"{e}");
             int totalPrice = _plannerRepository.GetCurrentTotalPrice();
-            summary += $"Totale kostprijs = {totalPrice}";
+            summary += $"Totale kostprijs = €{totalPrice}";
 
             return summary;
         }

@@ -6,6 +6,16 @@
         xmlns:local="clr-namespace:GentseFeesten.Presentation"
         mc:Ignorable="d"
         Title="Planner" Height="600" Width="1200">
+    <Window.Resources>
+        <Style x:Key="TitleLabels" TargetType="Label">
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+            <Setter Property="FontSize" Value="16"></Setter>
+        </Style>
+        <Style x:Key="ButtonStyle" TargetType="Button">
+            <Setter Property="MaxHeight" Value="30"></Setter>
+            <Setter Property="MaxWidth" Value="150"></Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"></ColumnDefinition>
@@ -16,8 +26,7 @@
             <RowDefinition Height="1*"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Column ="0" Grid.Row="0">
-            <Label FontWeight="Bold" FontSize="16">Uw Planner</Label>
-            <Label>Ingeplande Evenementen</Label>
+            <Label Style="{StaticResource TitleLabels}">Uw Ingeplande Evenementen</Label>
         </StackPanel>
             <DataGrid x:Name="PlannerGrid" Grid.Column ="0" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" SelectionMode="Single" SelectedCellsChanged="PlannerGrid_SelectedCellsChanged">
             <DataGrid.Columns>
@@ -28,17 +37,21 @@
                 <DataGridTextColumn Width="*" Header="Prijs" Binding="{Binding Price}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Label Grid.Column="1" Grid.Row="0" FontWeight="Bold" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center">Overzicht kostprijs</Label>
+        <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource TitleLabels}" HorizontalAlignment="Center" VerticalAlignment="Center">Overzicht kostprijs</Label>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"></RowDefinition>
                 <RowDefinition Height="60"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBox Grid.Row="0" x:Name="SummaryTextBox"></TextBox>
-            <StackPanel Grid.Row="1" VerticalAlignment="Bottom">
-                <Button x:Name="RemoveEventButton" IsEnabled ="False" MaxHeight="50" MaxWidth="150" Margin="5" Click="DeleteEventButton_Click">Verwijder Evenement</Button>
-                <Button x:Name="ReturnToEventsButton" MaxHeight="50" MaxWidth="150" Margin="5" Click="ReturnToEventsButton_Click" >Terug naar Evenementen</Button>
-            </StackPanel>
+            <TextBox Grid.Row="0" x:Name="SummaryTextBox" TextWrapping="Wrap" Padding="10" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True" IsReadOnly="True" Cursor="Arrow"></TextBox>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                    <ColumnDefinition Width="1*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" x:Name="RemoveEventButton" Style="{StaticResource ButtonStyle}" Padding="5" IsEnabled ="False" Click="DeleteEventButton_Click">Verwijder Evenement</Button>
+                <Button Grid.Column="1" x:Name="ReturnToEventsButton" Style="{StaticResource ButtonStyle}" Padding ="5" Click="ReturnToEventsButton_Click" >Terug naar Evenementen</Button>
+            </Grid>
             
         </Grid>
         

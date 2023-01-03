@@ -2,6 +2,7 @@ using GentseFeesten.Domain;
 using GentseFeesten.Domain.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -15,15 +16,27 @@ namespace GentseFeesten.Presentation
 
         public GentseFeestenApplication(DomainController domainController)
         {
-            _domainController = domainController;
-            _evenementenWindow = new EvenementenWindow();
-            _plannerWindow = new PlannerWindow();
+            // Used to initialise the Date structure in DataTable
+            FrameworkElement.LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(System.Windows.Markup.XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+            
+            try
+            {
+                _domainController = domainController;
+                _evenementenWindow = new EvenementenWindow();
+                _plannerWindow = new PlannerWindow();
 
-            _evenementenWindow.Show();
-            _evenementenWindow.MainEvents = domainController.GetAllMainEvents();
-            _evenementenWindow.EventSelected += EvenementenWindow_EvenementSelected;
-            _evenementenWindow.GoToPlannerButtonClicked += EvenementenWindow_GoToPlanner;
-            _evenementenWindow.AddEventToPlannerButtonClicked += EvenementenWindow_AddEventToPlanner;
+                _evenementenWindow.Show();
+                _evenementenWindow.MainEvents = domainController.GetAllMainEvents();
+                _evenementenWindow.EventSelected += EvenementenWindow_EvenementSelected;
+                _evenementenWindow.GoToPlannerButtonClicked += EvenementenWindow_GoToPlanner;
+                _evenementenWindow.AddEventToPlannerButtonClicked += EvenementenWindow_AddEventToPlanner;
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
 
         }
 
@@ -36,13 +49,16 @@ namespace GentseFeesten.Presentation
             _evenementenWindow.DescriptionBox.Text = _domainController.GetEventInformation(e);
             _evenementenWindow.AddEventToPlannerButton.IsEnabled = true;
             
-            if (e is ChildEvenement)
+            if (e is MainEvenement)
+            {
+                _evenementenWindow.ReturnToPreviousButton.IsEnabled = false;
+
+            } else
             {
                 _evenementenWindow.ReturnToPreviousButton.IsEnabled = true;
             }
-            
-            FillInNavigationBar(e);
 
+            FillInNavigationBar();
         }
 
         private void EvenementenWindow_GoToPlanner(object? sender, EventArgs e)
@@ -92,22 +108,22 @@ namespace GentseFeesten.Presentation
             _plannerWindow.SummaryTextBox.Text = _domainController.GetPlannerSummary();
         }
 
-        private void FillInNavigationBar(Evenement e)
+        private void FillInNavigationBar()
         {
-            Label navigationItem = new Label();
-
-            if (e is MainEvenement)
+            _evenementenWindow.NavigationBar.Children.Clear();
+            foreach (Evenement e in _evenementenWindow.EventsInTree)
             {
-                _evenementenWindow.NavigationBar.Children.Clear();
-                navigationItem.Content = e.Name;
-
+                Label l = new Label();
+                if (e is MainEvenement)
+                {
+                    l.Content = e.Name;
+                }
+                else
+                {
+                    l.Content = "->  " + e.Name;
+                }
+                _evenementenWindow.NavigationBar.Children.Add(l);
             }
-            else
-            {
-                navigationItem.Content = "-> " + e.Name;
-            }
-
-            _evenementenWindow.NavigationBar.Children.Add(navigationItem);
         }
 
     }

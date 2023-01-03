@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -19,11 +21,12 @@ namespace GentseFeesten.Presentation
         public EvenementenWindow()
         {
             InitializeComponent();
+            EventsInTree = new List<Evenement>();
         }
 
 
         public Evenement SelectedEvenement { get; set; }
-        public Evenement PreviouslySelectedEvenement { get; set; }
+        public List<Evenement> EventsInTree { get; set; }
 
         public List<Evenement> MainEvents
         {
@@ -76,7 +79,12 @@ namespace GentseFeesten.Presentation
 
         private void ReturnToPreviousButton_Click(object sender, RoutedEventArgs e)
         {
-            EventSelected?.Invoke(this, PreviouslySelectedEvenement);
+            if (EventsInTree.Last() is ChildEvenement)
+            {
+                EventsInTree.Remove(EventsInTree.Last());
+            }
+
+            EventSelected?.Invoke(this, EventsInTree.Last());
         }
 
         // Helper Methods
@@ -85,9 +93,13 @@ namespace GentseFeesten.Presentation
         {
             if (grid.SelectedItem != null)
             {
-                PreviouslySelectedEvenement = SelectedEvenement;
                 Evenement evenement = (Evenement)grid.SelectedItem;
                 SelectedEvenement = evenement;
+                if (evenement is MainEvenement)
+                {
+                    EventsInTree.Clear();
+                }
+                EventsInTree.Add(SelectedEvenement);
                 EventSelected?.Invoke(this, evenement);
             }
         }

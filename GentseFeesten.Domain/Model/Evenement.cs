@@ -41,11 +41,6 @@ namespace GentseFeesten.Domain.Model
             return $"{this.Name}";
         }
 
-        public void AlterDescription()
-        {
-
-        }
-
         public virtual string GetInformation()
         {
             if (string.IsNullOrEmpty(this.Description))
