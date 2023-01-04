@@ -62,7 +62,7 @@ namespace GentseFeesten.Persistence
             }
             catch
             {
-                throw new DatabaseErrorException("GetParentEvents");
+                throw new DatabaseConnectionException("GetParentEvents");
             }
             finally
             {
@@ -99,6 +99,7 @@ namespace GentseFeesten.Persistence
 
                 if (reader.HasRows)
                 {
+                    // Load into a seperate Datatable so the method can be called Recursivly.
                     DataTable dt = new DataTable();
                     dt.Load(reader);
 
@@ -110,21 +111,18 @@ namespace GentseFeesten.Persistence
                         {
                             _sqlConnection.Close();
                             GetMissingDateTimes(GetEventById(id), columnName);
-
-
                         }
                         else
                         {
                             _dateTimesToWorkWith.Add(childDateTime);
                         }
-
                     }
                 }
                 return _dateTimesToWorkWith;
             }
             catch
             {
-                throw new DatabaseErrorException("GetMissingDateTimes");
+                throw new DatabaseConnectionException("GetMissingDateTimes");
             }
 
             finally
@@ -136,7 +134,6 @@ namespace GentseFeesten.Persistence
 
         private int GetMissingPrice(Evenement evenement)
         {
-
             try
             {
                 _sqlConnection.Open();
@@ -145,6 +142,7 @@ namespace GentseFeesten.Persistence
 
                 if (reader.HasRows)
                 {
+                    // Load into a seperate Datatable so the method can be called Recursivly.
                     DataTable dt = new DataTable();
                     dt.Load(reader);
 
@@ -163,12 +161,11 @@ namespace GentseFeesten.Persistence
                         }
                     }
                 }
-
                 return _totalPrice;
             }
             catch
             {
-                throw new DatabaseErrorException("GetMissingPrice");
+                throw new DatabaseConnectionException("GetMissingPrice");
             }
             finally
             {
@@ -213,14 +210,14 @@ namespace GentseFeesten.Persistence
             }
             catch
             {
-                throw new DatabaseErrorException("GetChildEvents");
+                throw new DatabaseConnectionException("GetChildEvents");
             }
             finally { _sqlConnection.Close(); }
         }
 
-        public Evenement GetEventById(string eventId)
+        private Evenement GetEventById(string eventId)
         {
-            Evenement evenement = _allMainEvents.Where(e => e.Id == eventId).FirstOrDefault();
+            Evenement? evenement = _allMainEvents.Where(e => e.Id == eventId).FirstOrDefault();
 
             if (evenement == null)
             {
@@ -253,7 +250,7 @@ namespace GentseFeesten.Persistence
                 }
                 catch
                 {
-                    throw new DatabaseErrorException("GetEventById");
+                    throw new DatabaseConnectionException("GetEventById");
                 }
                 finally
                 {

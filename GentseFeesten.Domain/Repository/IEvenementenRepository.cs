@@ -9,6 +9,6 @@ namespace GentseFeesten.Domain.Repository
         public List<DateTime?> GetMissingStartData(Evenement evenement);
         public List<DateTime?> GetMissingEndData(Evenement evenement);
         public int GetMissingPriceData(Evenement evenement);
-        public Evenement GetEventById(string id);
+        
     }
 }

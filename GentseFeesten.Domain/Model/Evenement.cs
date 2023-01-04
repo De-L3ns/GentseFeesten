@@ -65,7 +65,7 @@ namespace GentseFeesten.Domain.Model
         {
             if ((e.Start >= this.Start && e.Start <= this.End) || e.End >= this.Start && e.End <= this.End ) {
 
-                throw new Exception($"Dit evenement is op hetzelfde momennt als: {this.Name}");
+                throw new EvenementException($"Het evenement dat u wilt ingeven ({e.Name}) is op hetzelfde is op hetzelfde moment als: {this.Name}");
             }
         }
     }

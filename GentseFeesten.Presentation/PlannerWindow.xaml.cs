@@ -1,6 +1,7 @@
 ﻿using GentseFeesten.Domain.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,6 +13,7 @@ namespace GentseFeesten.Presentation
         public event EventHandler<Evenement> RemoveEventButtonClicked;
         public event EventHandler PlannerEventSelected;
         public event EventHandler ReturnToEvenementenButtonClicked;
+        public event EventHandler<CancelEventArgs> WindowClosing;
         private List<Evenement> _plannerEvents;
         public Evenement SelectedPlannerEvent { get; private set; }
         public List<Evenement> PlannerEvents
@@ -28,6 +30,7 @@ namespace GentseFeesten.Presentation
             InitializeComponent();
         }
 
+        // Methods
         private void PlannerGrid_SelectedCellsChanged(object sender, SelectedCellsChangedEventArgs e)
         {
             if (PlannerGrid.SelectedItem != null)
@@ -48,5 +51,9 @@ namespace GentseFeesten.Presentation
             ReturnToEvenementenButtonClicked?.Invoke(this, EventArgs.Empty);
         }
 
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            WindowClosing?.Invoke(sender, e);
+        }
     }
 }

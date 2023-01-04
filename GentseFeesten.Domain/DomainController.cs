@@ -57,22 +57,25 @@ namespace GentseFeesten.Domain
             return summary;
         }
 
-        public void AddEventToPlanner(Evenement evenement)
+        public string AddEventToPlanner(Evenement evenement)
         {
             List<Evenement> listToCheck = GetEventsFromPlanner();
             
+            // Check if Event is allready on Planner
             if (listToCheck.Contains(evenement))
             {
-                throw new Exception("Dit Evenement staat reeds op de planner.");
+                throw new EvenementException($"{evenement.Name} staat reeds op de planner.");
             }
-                
+            // Check if there is a time overlap.    
             listToCheck.ForEach(e => { e.CheckTimeWithOtherEvent(evenement); });
             _plannerRepository.AddEventToPlanner(evenement);
+            return $"{evenement.Name} werd aan uw planner toegevoegd";
         }
 
-        public void RemoveEventFromPlanner(Evenement evenement)
+        public string RemoveEventFromPlanner(Evenement evenement)
         {
             _plannerRepository.RemoveEventFromPlanner(evenement);
+            return $"{evenement.Name} werd van uw planner verwijderd";
         }
 
         // Private Helper Methods
@@ -95,11 +98,5 @@ namespace GentseFeesten.Domain
                 evenement.Price = _evenementenRepository.GetMissingPriceData(evenement);
             }
         }
-
-        //private Evenement GetEventById(string id)
-        //{
-        //    Evenement evenement = _evenementenRepository.GetEventById(id);
-        //    return evenement;
-        //}
     }
 }

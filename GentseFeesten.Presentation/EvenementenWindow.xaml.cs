@@ -1,6 +1,7 @@
 ﻿using GentseFeesten.Domain.Model;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace GentseFeesten.Presentation
         public event EventHandler<Evenement> EventSelected;
         public event EventHandler GoToPlannerButtonClicked;
         public event EventHandler<Evenement> AddEventToPlannerButtonClicked;
+        public event EventHandler<CancelEventArgs> EvenementenWindowClosing;
         private List<Evenement> _mainEvents;
         private List<Evenement> _childEvents;
 
@@ -24,9 +26,9 @@ namespace GentseFeesten.Presentation
             EventsInTree = new List<Evenement>();
         }
 
-
         public Evenement SelectedEvenement { get; set; }
         public List<Evenement> EventsInTree { get; set; }
+        public bool IsClosing { get; private set; }
 
         public List<Evenement> MainEvents
         {
@@ -87,6 +89,23 @@ namespace GentseFeesten.Presentation
             EventSelected?.Invoke(this, EventsInTree.Last());
         }
 
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            // EvenementenWindowClosing?.Invoke(this, e);
+            MessageBoxResult messageBoxResult = MessageBox.Show(
+                "Bent u zeker dat u wilt afsluiten? Wanneer u dit venster sluit, zal de hele applicatie worden afgesloten.", "Afsluiten",
+                MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (messageBoxResult == MessageBoxResult.No)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                Application.Current.Shutdown();
+                IsClosing = true;
+            }
+        }
+
         // Helper Methods
 
         private void SelectedCellsChangedHelper(DataGrid grid)
@@ -103,7 +122,6 @@ namespace GentseFeesten.Presentation
                 EventSelected?.Invoke(this, evenement);
             }
         }
-
         private void SearchBoxHelper(object sender, List<Evenement> gridSource, DataGrid grid)
         {
             var mainTextSearch = sender as TextBox;

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:GentseFeesten.Presentation"
         mc:Ignorable="d"
-        Title="Planner" Height="600" Width="1200">
+        Title="Planner" Height="600" Width="1200" Closing="Window_Closing">
     <Window.Resources>
         <Style x:Key="TitleLabels" TargetType="Label">
             <Setter Property="FontWeight" Value="Bold"></Setter>

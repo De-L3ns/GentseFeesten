@@ -34,12 +34,10 @@ namespace GentseFeesten.Persistence
             return totalPrice;
 
         }
-
         public void AddEventToPlanner(Evenement evenement)
         {
             AddEventToPlannerDatabase(evenement);
-            _eventsOnPlanner.Add(evenement);
-            
+            _eventsOnPlanner.Add(evenement);   
         }
 
         public void RemoveEventFromPlanner(Evenement evenement)
@@ -82,7 +80,7 @@ namespace GentseFeesten.Persistence
 
             catch
             {
-                throw new DatabaseErrorException("AddEventToPlanner");
+                throw new DatabaseConnectionException("AddEventToPlanner");
             }
 
             finally
@@ -107,7 +105,7 @@ namespace GentseFeesten.Persistence
             }
             catch
             {
-                throw new DatabaseErrorException("RemoveEventFromPlanner");
+                throw new DatabaseConnectionException("RemoveEventFromPlanner");
             }
             finally
             {
@@ -144,7 +142,7 @@ namespace GentseFeesten.Persistence
 
             catch
             {
-                throw new DatabaseErrorException("GetEventsFromPlanner");
+                throw new DatabaseConnectionException("GetEventsFromPlanner");
             }
             finally
             {
