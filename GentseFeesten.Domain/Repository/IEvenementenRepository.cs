@@ -4,6 +4,7 @@ namespace GentseFeesten.Domain.Repository
 {
     public interface IEvenementenRepository
     {
+        public void InsertCsvIntoDatabase();
         public List<Evenement> GetMainEvents();
         public void GetChildEvents(Evenement evenement);
         public List<DateTime?> GetMissingStartData(Evenement evenement);

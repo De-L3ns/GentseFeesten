@@ -12,11 +12,13 @@ namespace GentseFeesten.Domain
         {
             _evenementenRepository = evenementenRepository;
             _plannerRepository = plannerRepository;
+            // _evenementenRepository.InsertCsvIntoDatabase(); // This method is used one time only to add all CSV Data into the database.
         }
 
         // Event Methods
         public List<Evenement> GetAllMainEvents()
         {
+            
             List<Evenement> mainEvents = _evenementenRepository.GetMainEvents();
             return mainEvents;
         }

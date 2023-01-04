@@ -24,6 +24,11 @@ namespace GentseFeesten.Persistence
             _sqlConnection = new SqlConnection(ConnectionString);
         }
 
+        public void InsertCsvIntoDatabase()
+        {
+            CsvToDatabaseMapper.InsertCsvIntoDatabase();
+        }
+
         public List<Evenement> GetMainEvents()
         {
             if (_allMainEvents.Count == 0)
@@ -40,7 +45,7 @@ namespace GentseFeesten.Persistence
             {
                 _sqlConnection.Open();
 
-                SqlCommand cmd = new("SELECT * FROM Evenementen WHERE Parent IS NULL;", _sqlConnection);
+                SqlCommand cmd = new("SELECT * FROM EvenementenGF WHERE Parent IS NULL;", _sqlConnection);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -94,7 +99,7 @@ namespace GentseFeesten.Persistence
             try
             {
                 _sqlConnection.Open();
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Evenementen WHERE Parent = '{evenement.Id}';", _sqlConnection);
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM EvenementenGF WHERE Parent = '{evenement.Id}';", _sqlConnection);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -137,7 +142,7 @@ namespace GentseFeesten.Persistence
             try
             {
                 _sqlConnection.Open();
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Evenementen WHERE Parent = '{evenement.Id}';", _sqlConnection);
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM EvenementenGF WHERE Parent = '{evenement.Id}';", _sqlConnection);
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 if (reader.HasRows)
@@ -181,7 +186,7 @@ namespace GentseFeesten.Persistence
                 _sqlConnection.Open();
                 List<Evenement> listOfChilds = new List<Evenement>();
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Evenementen WHERE Parent = @parentId", _sqlConnection);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM EvenementenGF WHERE Parent = @parentId", _sqlConnection);
                 cmd.Parameters.Add(new SqlParameter("@parentId", evenement.Id));
 
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -225,7 +230,7 @@ namespace GentseFeesten.Persistence
                 {
                     _sqlConnection.Open();
 
-                    SqlCommand cmd = new("SELECT * FROM Evenementen WHERE Id = @Id;", _sqlConnection);
+                    SqlCommand cmd = new("SELECT * FROM EvenementenGF WHERE Id = @Id;", _sqlConnection);
                     cmd.Parameters.Add(new SqlParameter("@Id", eventId));
                     SqlDataReader reader = cmd.ExecuteReader();
 
